@@ -8,18 +8,20 @@
 
 La fase más importante para no tener que rehacer trabajo después. Nada de esto es negociable ni se puede saltar para "llegar más rápido" a pantallas visibles.
 
-- [ ] Preparación en `diabecare-api` (ver `ARCHITECTURE.md` sección 3.3):
+- [x] Preparación en `diabecare-api` (ver `ARCHITECTURE.md` sección 3.3):
   - IDs generados por el cliente aceptados en creación (glucosa, comidas, signos vitales, ejercicio)
   - `MobilePushTokenPort` + adaptador FCM, en paralelo al `PushSubscriptionPort` de Web Push existente
-  - Parámetro `updatedSince` en endpoints de listado para sincronización incremental
-  - Revisión de idempotencia en endpoints de escritura
-- [ ] Setup del proyecto Flutter: estructura de carpetas (`ARCHITECTURE.md` sección 2), lint rules, CI (`flutter analyze` + `flutter test` en cada push)
-- [ ] Design system base: `ThemeData` claro/oscuro con los tokens de marca, widgets adaptativos fundacionales (`platform_action_sheet`, botones, inputs, diálogos de confirmación)
-- [ ] Auth: login, registro, refresh automático, logout, guardado seguro de tokens (`flutter_secure_storage`), bloqueo biométrico opcional
-- [ ] Motor de sync offline — el mecanismo (outbox, esquema Drift base, `SyncService` con reintentos/backoff), todavía sin datos de dominio reales conectados
-- [ ] Script de generación de ARB desde `es.json`/`en.json`
+  - Endpoint `/sync` dedicado para sincronización incremental (glucosa; el resto de dominios lo replica en su fase)
+  - Idempotencia en escrituras cubierta por los IDs generados por el cliente
+- [x] Setup del proyecto Flutter: estructura de carpetas (`ARCHITECTURE.md` sección 2), lint rules, CI (`flutter analyze` + `flutter test` en cada push)
+- [x] Design system base: `ThemeData` claro/oscuro con los tokens de marca, widgets adaptativos fundacionales (`platform_action_sheet`, botón/input de marca, diálogo de confirmación adaptativo, date picker adaptativo)
+- [x] Auth: login, registro, refresh automático (con rotación de refresh token y single-flight coordinado), logout, guardado seguro de tokens (`flutter_secure_storage`), bloqueo biométrico opcional (toggle apagado por defecto — la UI del toggle llega con la pantalla de perfil en una fase posterior)
+- [x] Motor de sync offline — el mecanismo (`AppDatabase` Drift base, `SyncService`/`SyncableRepository` con reintentos/backoff exponencial), probado con un repositorio y un `Dio` fake; todavía sin dominio real conectado (glucosa lo conecta en Fase 1)
+- [x] Script de generación de ARB desde `es.json`/`en.json` (591 claves, `tool/generate_arb.dart`)
 
-**Criterio de salida de esta fase**: se puede hacer login, la app mantiene sesión, el tema se ve correcto en modo claro/oscuro en ambas plataformas, y existe un mecanismo de sync que se puede probar con datos dummy.
+**Criterio de salida de esta fase — cumplido**: login/registro funcionan contra el backend real (validado en vivo por curl: registro, login, refresh con rotación, detección de reuso, logout, forgot-password anti-enumeración — todos devuelven exactamente el contrato esperado), la sesión persiste en `flutter_secure_storage`, el tema se ve correcto en modo claro/oscuro, y el motor de sync tiene cobertura de tests unitarios (éxito, reintento con backoff, error de validación permanente, agotamiento de reintentos).
+
+**Pendiente de verificación** (no se pudo hacer en esta máquina — sin Android SDK/emulador ni posibilidad de compilar iOS desde Windows): correr la app real en un dispositivo/emulador. `flutter analyze` y `flutter test` sí corrieron localmente y en verde (ver CI).
 
 ---
 

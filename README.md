@@ -6,9 +6,11 @@ Apps nativas para Android e iOS de DiabeCare — control de salud para pacientes
 
 ## Estado actual
 
-**Fase 0 en progreso.** Proyecto Flutter scaffoldeado (`flutter create`), estructura de carpetas por feature ya creada (ver `lib/`), dependencias base instaladas (Riverpod, go_router, Drift, dio, flutter_secure_storage, local_auth, connectivity_plus), tema Material 3 con los tokens de marca "Calm Health", CI en GitHub Actions (`flutter analyze` + `flutter test` en cada push). Ninguna pantalla real todavía — solo un placeholder en `/`.
+**Fase 0 completa.** Auth real contra `diabecare-api` (login, registro, refresh con rotación de token, logout, recuperación de contraseña), sesión persistida en `flutter_secure_storage`, bloqueo biométrico opcional, motor de sincronización offline (mecanismo genérico, probado con tests unitarios — todavía sin un dominio real conectado), design system base (widgets adaptativos Android/iOS), i18n generado desde los mismos `es.json`/`en.json` de la web (591 claves). CI en GitHub Actions (`flutter analyze` + `flutter test` en cada push).
 
 En paralelo, la preparación necesaria ya quedó hecha en `diabecare-api`: IDs generados por el cliente, registro de tokens FCM (envío real pendiente), y el primer endpoint de sincronización incremental (`/glucose/{patientId}/sync`).
+
+Siguiente paso: Fase 1 (glucosa — registro, historial, BLE, alertas, primer dominio conectado al motor de sync). No se pudo probar la app en un emulador/dispositivo real en esta máquina (sin Android SDK; iOS no se puede compilar desde Windows) — el contrato de auth sí se validó en vivo contra el backend real vía `curl`.
 
 - **[`ARCHITECTURE.md`](./ARCHITECTURE.md)** — stack (Flutter + Riverpod + Drift + dio), arquitectura en capas, integración con el backend existente, motor de sincronización offline, estado real de los cambios en `diabecare-api`.
 - **[`DESIGN_GUIDELINES.md`](./DESIGN_GUIDELINES.md)** — cómo lograr que la app se sienta nativa en Android (Material 3) e iOS (Human Interface Guidelines) sin perder la identidad de marca "Calm Health" ya establecida en la web.
