@@ -41,11 +41,17 @@ La fase más importante para no tener que rehacer trabajo después. Nada de esto
 
 ## Fase 2 — Registro diario
 
-- [ ] Nutrición: registro de comidas, buscador de alimentos, escaneo de código de barras (OpenFoodFacts)
-- [ ] Signos vitales y ejercicio
-- [ ] Medicamentos: CRUD, recordatorios automáticos por frecuencia
-- [ ] Calculadora de insulina
-- [ ] Offline-first extendido a estos dominios
+- [x] Nutrición: registro de comidas, buscador de alimentos, escaneo de código de barras (OpenFoodFacts)
+- [x] Signos vitales y ejercicio
+- [x] Medicamentos: registro/desactivación, recordatorios automáticos por frecuencia (100% push server-side, sin CRUD de horarios en el cliente)
+- [x] Calculadora de insulina + perfil de insulina
+- [x] Offline-first extendido a estos dominios (`MealEntries`/`VitalSigns`/`ExerciseLogs`/`Medications` en Drift, los 4 repositorios implementan `SyncableRepository`, pull incremental vía `/sync` + cursor en `SyncCursors`)
+
+**Preparación de backend**: se replicó el patrón `/sync` de glucosa (Fase 1) en los 4 dominios nuevos — ninguno lo tenía. `Medication` ganó `createWithId` (no existía soporte de ID generado por el cliente). Se detectó y corrigió un gap real: `MealEntry`/`VitalSign`/`ExerciseLog` nunca exponían `updatedAt` en sus domain models/responses (a diferencia de glucosa/medicamentos) — necesario para que `pullChanges()` pueble `serverUpdatedAt` localmente.
+
+**Validado en vivo contra el backend real** (curl): registro con ID de cliente (idempotente), `/sync` con `updatedAt`, desactivación de medicamentos (incluida en `/sync`, no solo en el listado de activos), perfil de insulina (`PATCH /patients/{id}/insulin-profile`), calculadora (`POST /insulin/{id}/calculate`, incluye el caso "perfil no configurado"), búsqueda de alimentos y lookup por código de barras — todos los DTOs de Dart coinciden exactamente.
+
+**Simplificación deliberada** (consistente con Fase 1): catálogos de metadata (tipos de comida/ejercicio/medicamento, unidades de dosis, frecuencias) son enums Dart estáticos con `wireValue`, no el `MetadataService` completo de la web (15 endpoints) — las etiquetas siguen siendo el `wireValue` crudo, no una traducción.
 
 ---
 
