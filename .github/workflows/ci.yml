@@ -22,6 +22,9 @@ jobs:
       - name: Instalar dependencias
         run: flutter pub get
 
+      - name: Generar código (Riverpod/Drift)
+        run: dart run build_runner build
+
       - name: Analizar
         run: flutter analyze
 
