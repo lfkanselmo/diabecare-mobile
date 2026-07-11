@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/domain/repositories/auth_repository.dart';
-import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
+import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
+import '../../features/glucose/presentation/screens/agp_chart_screen.dart';
+import '../../features/glucose/presentation/screens/glucose_history_screen.dart';
+import '../../features/glucose/presentation/screens/glucose_register_screen.dart';
 import '../network/network_providers.dart';
-import '../security/biometric_lock_gate.dart';
 
 part 'app_router.g.dart';
 
@@ -23,7 +23,10 @@ GoRouter appRouter(Ref ref) {
     refreshListenable: ref.watch(sessionExpiredProvider),
     redirect: (context, state) => _redirect(authRepository, state),
     routes: [
-      GoRoute(path: '/', builder: (context, state) => const _HomePlaceholder()),
+      GoRoute(path: '/', builder: (context, state) => const DashboardScreen()),
+      GoRoute(path: '/glucose/register', builder: (context, state) => const GlucoseRegisterScreen()),
+      GoRoute(path: '/glucose/history', builder: (context, state) => const GlucoseHistoryScreen()),
+      GoRoute(path: '/glucose/agp', builder: (context, state) => const AgpChartScreen()),
       GoRoute(path: '/auth/login', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/auth/register', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/auth/forgot-password', builder: (context, state) => const ForgotPasswordScreen()),
@@ -55,37 +58,5 @@ Future<String?> _redirect(AuthRepository authRepository, GoRouterState state) as
   } catch (_) {
     await authRepository.clearSession();
     return goingToAuth ? null : '/auth/login';
-  }
-}
-
-class _HomePlaceholder extends ConsumerWidget {
-  const _HomePlaceholder();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final session = ref.watch(authProvider).value;
-
-    return BiometricLockGate(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('DiabeCare'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () => ref.read(authProvider.notifier).logout(),
-            ),
-          ],
-        ),
-        body: Center(
-          child: Text(
-            session?.patient == null
-                ? 'Sesión iniciada\n(Fase 1 — sin pantallas de dominio todavía)'
-                : 'Hola, ${session!.patient!.fullName}\n(Fase 1 — sin pantallas de dominio todavía)',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
-      ),
-    );
   }
 }

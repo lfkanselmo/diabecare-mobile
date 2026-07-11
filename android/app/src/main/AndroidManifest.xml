@@ -1,4 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Conexión con glucómetros por Bluetooth (Fase 1) — `neverForLocation`
+         porque la app no usa el escaneo BLE para inferir ubicación. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
     <application
         android:label="diabecare_mobile"
         android:name="${applicationName}"

@@ -27,11 +27,13 @@ La fase más importante para no tener que rehacer trabajo después. Nada de esto
 
 ## Fase 1 — Núcleo clínico
 
-- [ ] Glucosa: registro (incl. conexión Bluetooth con glucómetro, reutilizando el mismo Glucose Service estándar ya implementado en `diabecare-web`), historial, estadísticas TIR/HbA1c/CV, perfil AGP
-- [ ] Dashboard: métricas, alertas, accesos rápidos
-- [ ] Alertas clínicas completas (7 tipos + patrones + ciclo)
-- [ ] Push notifications conectadas (FCM ya preparado en Fase 0)
-- [ ] Offline-first real para glucosa (primer dominio conectado al motor de sync)
+- [x] Glucosa: registro (incl. conexión Bluetooth con glucómetro, mismo protocolo Glucose Service estándar que `diabecare-web` — parsing testeado, flujo de conexión real sin verificar por falta de hardware), historial, estadísticas TIR/HbA1c/CV, perfil AGP
+- [x] Dashboard: glucosa + alertas + acceso rápido a registro (nutrición/vitales/ciclo se agregan cuando esos dominios existan, Fase 2/3 — no se construyeron accesos a pantallas que no existen todavía)
+- [x] Alertas clínicas: panel conectado a `/alerts` (los 5 detectores ya implementados en el backend, sin cambios) — sin polling, igual que la web
+- [ ] Push notifications conectadas — **diferido**: el backend no tiene un proyecto de Firebase real (`sendToMobileDevices` es un no-op deliberado), construir el cliente FCM ahora ni siquiera compilaría (falta `google-services.json`). Se retoma cuando exista un proyecto Firebase real.
+- [x] Offline-first real para glucosa (primer dominio conectado al motor de sync de Fase 0: `GlucoseReadings` en Drift, `GlucoseRepositoryImpl` implementa `SyncableRepository`, pull incremental vía `/sync` + cursor en `SyncCursors`)
+
+**Validado en vivo contra el backend real** (curl): registro con ID de cliente (idempotente confirmado — reenviar el mismo `readingId` no duplica), `/sync`, `/latest`, `/stats`, `/agp-profile`, `/alerts`, `DELETE` — todos los DTOs de Dart coinciden exactamente. Simplificación deliberada: el historial no muestra marcadores de comida/ejercicio (dependen de dominios que no existen en el móvil todavía, Fase 2) — la app confía enteramente en la caché local (Drift) poblada por `/sync`, nunca llama a `/history` directamente.
 
 **Criterio de salida**: un paciente puede vivir en la app solo con este subconjunto sin sentir que le falta algo crítico — es intencionalmente el corazón funcional de la app.
 

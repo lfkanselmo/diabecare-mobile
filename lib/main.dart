@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/l10n/app_localizations.dart';
 import 'core/router/app_router.dart';
+import 'core/sync/sync_providers.dart';
 import 'core/theme/app_theme.dart';
 
 void main() {
@@ -14,6 +15,9 @@ class DiabeCareApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    // Arranca la escucha de conectividad una sola vez (el provider es
+    // keepAlive) — dispara `SyncService.syncAll()` + pull al recuperar red.
+    ref.watch(syncCoordinatorProvider);
     return MaterialApp.router(
       title: 'DiabeCare',
       theme: AppTheme.light(),
