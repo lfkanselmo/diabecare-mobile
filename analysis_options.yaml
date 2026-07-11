@@ -2,3 +2,8 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
+    # Forzaría nombres de parámetro con guion bajo en constructores públicos
+    # (ej. `RefreshInterceptor({required this._dio, ...})`, invocable solo
+    # como `RefreshInterceptor(_dio: ...)`) — peor API que un initializer
+    # list explícito con nombres de parámetro legibles.
+    prefer_initializing_formals: false
