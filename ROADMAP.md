@@ -57,11 +57,21 @@ La fase más importante para no tener que rehacer trabajo después. Nada de esto
 
 ## Fase 3 — Funcionalidades clínicas y sociales avanzadas
 
-- [ ] Ciclo menstrual (registro día a día, fases, correlación glucémica)
-- [ ] Reportes PDF
-- [ ] Cuidadores (invitar, canjear código, vista de solo lectura)
-- [ ] Recuperación de contraseña
-- [ ] Gestión de cuenta: exportar datos, suspender/eliminar, sesiones activas, API keys de dispositivo (tab "Dispositivos")
+- [x] Ciclo menstrual (registro día a día, fases, correlación glucémica)
+- [x] Reportes PDF
+- [x] Cuidadores (invitar, canjear código, vista de solo lectura)
+- [x] Recuperación de contraseña — **ya estaba completa desde Fase 0** (`ForgotPasswordScreen`/`ResetPasswordScreen`), este ítem quedó marcado por error al planear la fase
+- [x] Gestión de cuenta: exportar datos, suspender/eliminar, sesiones activas, API keys de dispositivo (pantalla de perfil nueva con tab "Dispositivos")
+
+Ninguno de estos dominios necesita offline-first — a diferencia de Fase 1/2, acá todo se calcula server-side y se consulta en vivo (mismo patrón que stats/AGP de glucosa): no hay tablas Drift nuevas, no hay `SyncableRepository`.
+
+**Bugs reales encontrados y corregidos durante la validación en vivo** (ninguno introducido por este trabajo, ambos preexistentes en `diabecare-api`):
+1. Re-invitar a un cuidador previamente revocado fallaba con un error 500 (violación de la restricción de unicidad `(patientId, caregiverUserId)`) — `RedeemCaregiverInviteUseCaseImpl` intentaba crear un vínculo nuevo en vez de reactivar el existente.
+2. `GET /auth/sessions/{userId}` y `POST /auth/logout-all` estaban rotos para cualquier cliente real (siempre tiraban NullPointerException) — el wildcard `/api/v1/auth/**` en `PublicEndpoints` eximía a estos 2 endpoints autenticados del filtro JWT. Se reemplazó por la lista explícita de los 6 endpoints realmente públicos. Confirmado que la web también los usa (nunca funcionaron ahí tampoco).
+
+**Validado en vivo contra el backend real** (curl): ciclo completo (registrar período, registrar día con síntomas, finalizar período, calendario de fases, todo con `Accept-Language: es` confirmando labels traducidos), reporte PDF (contenido válido verificado), invitar/canjear/revocar/re-invitar cuidador, vista de solo lectura del cuidador sobre el paciente (info + stats de glucosa + alertas), exportar datos, sesiones activas, logout-all (con verificación de que el refresh token queda invalidado), generar/listar API keys de dispositivo.
+
+**Simplificación deliberada**: la vista de solo lectura del cuidador reutiliza directamente `GlucoseApiClient`/`Alert.fromJson`/`AlertsPanel`/`GlucoseStatsCard` ya existentes (llamando a los endpoints con un `patientId` explícito en vez del de la sesión propia) en lugar de duplicar esa lógica — mismo alcance que `caregiver-view.component.ts` de la web (no es un espejo completo de la app, ni en la web).
 
 ---
 
