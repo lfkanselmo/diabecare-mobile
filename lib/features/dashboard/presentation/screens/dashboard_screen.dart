@@ -9,11 +9,12 @@ import '../../../alerts/presentation/widgets/alerts_panel.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../glucose/presentation/providers/glucose_providers.dart';
 import '../../../glucose/presentation/widgets/glucose_stats_card.dart';
+import '../../../nutrition/presentation/widgets/daily_summary_card.dart';
+import '../../../vitals/presentation/providers/vitals_providers.dart';
 
-/// Dashboard de Fase 1 — muestra solo lo que Fase 1 construye (glucosa +
-/// alertas). El resto de tarjetas/accesos rápidos de la web (nutrición,
-/// vitales, ciclo) se agregan cuando esos dominios lleguen (Fase 2/3), no
-/// se construyen accesos a pantallas que todavía no existen.
+/// Dashboard de Fase 1 + Fase 2 — glucosa, alertas, resumen diario de
+/// nutrición y último signo vital. El ciclo menstrual (Fase 3) todavía no
+/// existe, no se construyen accesos a pantallas que todavía no existen.
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
@@ -70,17 +71,69 @@ class DashboardScreen extends ConsumerWidget {
                   onPressed: () => context.push('/glucose/history'),
                   child: Text(l10n.dashboardViewHistory),
                 ),
+                const SizedBox(height: 16),
+                const DailySummaryCard(),
+                const SizedBox(height: 16),
+                const _LatestVitalCard(),
                 const SizedBox(height: 24),
                 FilledButton.icon(
                   onPressed: () => context.push('/glucose/register'),
                   icon: const Icon(Icons.add),
                   label: Text(l10n.dashboardRegisterGlucose),
                 ),
+                const SizedBox(height: 8),
+                FilledButton.tonalIcon(
+                  onPressed: () => context.push('/nutrition/log'),
+                  icon: const Icon(Icons.restaurant),
+                  label: Text(l10n.dashboardRegisterMeal),
+                ),
+                const SizedBox(height: 8),
+                FilledButton.tonalIcon(
+                  onPressed: () => context.push('/vitals'),
+                  icon: const Icon(Icons.monitor_heart_outlined),
+                  label: Text(l10n.dashboardVitals),
+                ),
+                const SizedBox(height: 8),
+                FilledButton.tonalIcon(
+                  onPressed: () => context.push('/medications'),
+                  icon: const Icon(Icons.medication_outlined),
+                  label: Text(l10n.dashboardMedications),
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _LatestVitalCard extends ConsumerWidget {
+  const _LatestVitalCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    return FutureBuilder(
+      future: ref.read(vitalSignRepositoryProvider).getLatest(),
+      builder: (context, snapshot) {
+        final vital = snapshot.data;
+        if (vital == null) return const SizedBox.shrink();
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.dashboardLatestVitalTitle, style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                if (vital.weightKg != null) Text('${l10n.vitalsWeight}: ${vital.weightKg} kg'),
+                if (vital.bmi != null) Text('BMI: ${vital.bmi}'),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import '../entities/auth_session.dart';
+import '../entities/patient.dart';
 import '../entities/register_data.dart';
 
 /// A diferencia de `auth.service.ts` (localStorage, síncrono), acá todo es
@@ -33,4 +34,8 @@ abstract interface class AuthRepository {
   Future<String> refreshAccessToken();
 
   Future<void> clearSession();
+
+  /// Actualiza el paciente cacheado en la sesión (p.ej. tras editar el
+  /// perfil de insulina) sin afectar tokens/rol.
+  Future<void> updateCachedPatient(Patient patient);
 }

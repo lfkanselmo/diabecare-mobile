@@ -10,6 +10,15 @@ import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/glucose/presentation/screens/agp_chart_screen.dart';
 import '../../features/glucose/presentation/screens/glucose_history_screen.dart';
 import '../../features/glucose/presentation/screens/glucose_register_screen.dart';
+import '../../features/medications/presentation/screens/insulin_calculator_screen.dart';
+import '../../features/medications/presentation/screens/insulin_profile_screen.dart';
+import '../../features/medications/presentation/screens/medication_list_screen.dart';
+import '../../features/medications/presentation/screens/medication_register_screen.dart';
+import '../../features/nutrition/presentation/screens/meal_history_screen.dart';
+import '../../features/nutrition/presentation/screens/meal_register_screen.dart';
+import '../../features/vitals/presentation/screens/exercise_register_screen.dart';
+import '../../features/vitals/presentation/screens/vital_sign_register_screen.dart';
+import '../../features/vitals/presentation/screens/vitals_screen.dart';
 import '../network/network_providers.dart';
 
 part 'app_router.g.dart';
@@ -27,6 +36,21 @@ GoRouter appRouter(Ref ref) {
       GoRoute(path: '/glucose/register', builder: (context, state) => const GlucoseRegisterScreen()),
       GoRoute(path: '/glucose/history', builder: (context, state) => const GlucoseHistoryScreen()),
       GoRoute(path: '/glucose/agp', builder: (context, state) => const AgpChartScreen()),
+      GoRoute(path: '/nutrition/log', builder: (context, state) => const MealRegisterScreen()),
+      GoRoute(path: '/nutrition/history', builder: (context, state) => const MealHistoryScreen()),
+      GoRoute(path: '/vitals', builder: (context, state) => const VitalsScreen()),
+      GoRoute(path: '/vitals/register', builder: (context, state) => const VitalSignRegisterScreen()),
+      GoRoute(path: '/exercise/register', builder: (context, state) => const ExerciseRegisterScreen()),
+      GoRoute(path: '/medications', builder: (context, state) => const MedicationListScreen()),
+      GoRoute(path: '/medications/register', builder: (context, state) => const MedicationRegisterScreen()),
+      GoRoute(
+        path: '/medications/insulin-profile',
+        builder: (context, state) => const InsulinProfileScreen(),
+      ),
+      GoRoute(
+        path: '/medications/insulin-calculator',
+        builder: (context, state) => const InsulinCalculatorScreen(),
+      ),
       GoRoute(path: '/auth/login', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/auth/register', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/auth/forgot-password', builder: (context, state) => const ForgotPasswordScreen()),

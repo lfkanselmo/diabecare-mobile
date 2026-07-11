@@ -93,6 +93,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> clearSession() => _storage.clearSession();
 
+  @override
+  Future<void> updateCachedPatient(Patient patient) => _storage.savePatient(jsonEncode(patient.toJson()));
+
   Future<AuthSession> _persist(AuthResponseDto dto) async {
     await _storage.saveSession(
       accessToken: dto.accessToken,

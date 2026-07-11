@@ -48,6 +48,10 @@ class SecureAuthStorage {
     ]);
   }
 
+  /// Actualiza solo el paciente cacheado (p.ej. tras editar el perfil de
+  /// insulina) — no toca tokens/rol.
+  Future<void> savePatient(String patientJson) => _storage.write(key: _patientKey, value: patientJson);
+
   Future<String?> getAccessToken() => _storage.read(key: _accessTokenKey);
 
   Future<String?> getRefreshToken() => _storage.read(key: _refreshTokenKey);
