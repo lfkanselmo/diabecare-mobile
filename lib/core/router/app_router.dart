@@ -6,6 +6,8 @@ import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
+import '../../features/caregivers/presentation/screens/caregiver_patient_view_screen.dart';
+import '../../features/caregivers/presentation/screens/caregivers_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/glucose/presentation/screens/agp_chart_screen.dart';
 import '../../features/glucose/presentation/screens/glucose_history_screen.dart';
@@ -14,8 +16,13 @@ import '../../features/medications/presentation/screens/insulin_calculator_scree
 import '../../features/medications/presentation/screens/insulin_profile_screen.dart';
 import '../../features/medications/presentation/screens/medication_list_screen.dart';
 import '../../features/medications/presentation/screens/medication_register_screen.dart';
+import '../../features/menstrual_cycle/presentation/screens/cycle_day_entry_screen.dart';
+import '../../features/menstrual_cycle/presentation/screens/menstrual_cycle_screen.dart';
 import '../../features/nutrition/presentation/screens/meal_history_screen.dart';
 import '../../features/nutrition/presentation/screens/meal_register_screen.dart';
+import '../../features/profile/presentation/screens/account_screen.dart';
+import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/reports/presentation/screens/report_screen.dart';
 import '../../features/vitals/presentation/screens/exercise_register_screen.dart';
 import '../../features/vitals/presentation/screens/vital_sign_register_screen.dart';
 import '../../features/vitals/presentation/screens/vitals_screen.dart';
@@ -51,6 +58,17 @@ GoRouter appRouter(Ref ref) {
         path: '/medications/insulin-calculator',
         builder: (context, state) => const InsulinCalculatorScreen(),
       ),
+      GoRoute(path: '/cycle', builder: (context, state) => const MenstrualCycleScreen()),
+      GoRoute(path: '/cycle/log', builder: (context, state) => const CycleDayEntryScreen()),
+      GoRoute(path: '/reports', builder: (context, state) => const ReportScreen()),
+      GoRoute(path: '/caregivers', builder: (context, state) => const CaregiversScreen()),
+      GoRoute(
+        path: '/caregivers/patients/:patientId',
+        builder: (context, state) =>
+            CaregiverPatientViewScreen(patientId: state.pathParameters['patientId']!),
+      ),
+      GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
+      GoRoute(path: '/account', builder: (context, state) => const AccountScreen()),
       GoRoute(path: '/auth/login', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/auth/register', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/auth/forgot-password', builder: (context, state) => const ForgotPasswordScreen()),

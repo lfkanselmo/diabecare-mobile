@@ -829,5 +829,126 @@
   "dashboardRegisterMeal": "Log meal",
   "dashboardVitals": "Vitals & exercise",
   "dashboardMedications": "Medications",
-  "dashboardLatestVitalTitle": "Latest vital signs"
+  "dashboardLatestVitalTitle": "Latest vital signs",
+  "dashboardCycle": "Menstrual cycle",
+
+  "cycleDayEntrySuccessMessage": "Day logged",
+  "cycleDayEntryErrorMessage": "Couldn't save this day",
+  "cycleDayEntryTitle": "Log today",
+  "cycleDayEntryFlowIntensity": "Flow",
+  "cycleDayEntrySymptoms": "Symptoms",
+  "cycleDayEntrySymptomsHint": "Tap to cycle through mild / moderate / severe",
+  "cycleDayEntryNotes": "Notes",
+  "cycleDayEntrySaving": "Saving…",
+  "cycleDayEntrySave": "Save",
+  "cycleErrorMessage": "Something went wrong",
+  "cycleTitle": "Menstrual cycle",
+  "cycleDayOfCycle": "Day {day} of cycle",
+  "@cycleDayOfCycle": {
+    "placeholders": {
+      "day": {}
+    }
+  },
+  "cycleNextStart": "Next period expected: {date}",
+  "@cycleNextStart": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "cycleProjectionStale": "This projection may be outdated — log a new cycle when your period starts",
+  "cycleFinishPeriod": "Finish period",
+  "cycleStartPeriod": "Start period",
+  "cycleLogToday": "Log today",
+  "cycleHistoryTitle": "History",
+  "cycleHistoryEmpty": "No cycles logged yet",
+  "cycleOngoing": "Ongoing",
+  "cycleDaysSuffix": "days",
+
+  "reportTitle": "Medical report",
+  "reportDescription": "Generate a PDF summary of your glucose data to share with your care team.",
+  "reportRange": "Date range",
+  "reportLast7Days": "Last 7 days",
+  "reportLast14Days": "Last 14 days",
+  "reportLast30Days": "Last 30 days",
+  "reportLast90Days": "Last 90 days",
+  "reportGenerate": "Generate and share",
+  "reportGenerating": "Generating…",
+  "reportErrorMessage": "Couldn't generate the report",
+
+  "caregiverPatientViewTitle": "Patient overview",
+  "caregiversInviteTitle": "Invite code",
+  "caregiversInviteCode": "Share this code: {code}",
+  "@caregiversInviteCode": {
+    "placeholders": {
+      "code": {}
+    }
+  },
+  "caregiversClose": "Close",
+  "caregiversErrorMessage": "Something went wrong",
+  "caregiversRevokeTitle": "Revoke access",
+  "caregiversRevokeMessage": "Revoke {name}'s access to your data?",
+  "@caregiversRevokeMessage": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "caregiversRevokeConfirm": "Revoke",
+  "caregiversCancel": "Cancel",
+  "caregiversRedeemTitle": "Redeem invite code",
+  "caregiversRedeemHint": "Invite code",
+  "caregiversRedeemConfirm": "Redeem",
+  "caregiversRedeemSuccess": "You now have read-only access to {name}",
+  "@caregiversRedeemSuccess": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "caregiversRedeemError": "Invalid or expired code",
+  "caregiversTitle": "Caregivers",
+  "caregiversTabMine": "My caregivers",
+  "caregiversTabPatients": "Patients I care for",
+  "caregiversCreateInvite": "Invite a caregiver",
+  "caregiversNoLinks": "No caregivers linked yet",
+  "caregiversNoPatients": "You don't have read-only access to any patient yet",
+
+  "profileTitle": "Profile",
+  "profileBiometricLock": "Require biometric unlock",
+  "profileInsulinProfile": "Insulin profile",
+  "profileCaregivers": "Caregivers",
+  "profileReports": "Medical reports",
+  "profileAccount": "Account",
+  "profileLogout": "Log out",
+
+  "accountErrorMessage": "Something went wrong",
+  "accountLogoutAllTitle": "Log out of all devices",
+  "accountLogoutAllMessage": "This will end every active session, including this one.",
+  "accountLogoutAllConfirm": "Log out everywhere",
+  "accountCancel": "Cancel",
+  "accountSuspendTitle": "Suspend account",
+  "accountSuspendMessage": "Your account will be deactivated immediately. You can recover it by logging in again before it's permanently deleted.",
+  "accountSuspendConfirm": "Suspend",
+  "accountDeleteTitle": "Delete account",
+  "accountDeleteMessage": "Your access will be deactivated immediately, and your health data will be permanently deleted 30 days later unless you recover your account before then.",
+  "accountDeleteConfirm": "Delete",
+  "accountGenerateKeyTitle": "Generate device API key",
+  "accountKeyLabel": "Label",
+  "accountGenerateKeyConfirm": "Generate",
+  "accountKeyGeneratedTitle": "Copy this key now",
+  "accountClose": "Close",
+  "accountRevokeKeyTitle": "Revoke key",
+  "accountRevokeKeyMessage": "Revoke the key \"{label}\"? Any device using it will stop working.",
+  "@accountRevokeKeyMessage": {
+    "placeholders": {
+      "label": {}
+    }
+  },
+  "accountRevokeKeyConfirm": "Revoke",
+  "accountTitle": "Account",
+  "accountTabAccount": "Account",
+  "accountTabDevices": "Devices",
+  "accountExportData": "Export my data",
+  "accountSessionsTitle": "Active sessions",
+  "accountDangerZone": "Danger zone",
+  "accountNoKeys": "No device API keys yet",
+  "accountKeyRevoked": "Revoked"
 }

@@ -6,15 +6,16 @@ import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/security/biometric_lock_gate.dart';
 import '../../../alerts/presentation/providers/alerts_provider.dart';
 import '../../../alerts/presentation/widgets/alerts_panel.dart';
+import '../../../auth/domain/entities/biological_sex.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../glucose/presentation/providers/glucose_providers.dart';
 import '../../../glucose/presentation/widgets/glucose_stats_card.dart';
 import '../../../nutrition/presentation/widgets/daily_summary_card.dart';
 import '../../../vitals/presentation/providers/vitals_providers.dart';
 
-/// Dashboard de Fase 1 + Fase 2 — glucosa, alertas, resumen diario de
-/// nutrición y último signo vital. El ciclo menstrual (Fase 3) todavía no
-/// existe, no se construyen accesos a pantallas que todavía no existen.
+/// Dashboard de Fase 1 + Fase 2 + Fase 3 — glucosa, alertas, resumen diario
+/// de nutrición, último signo vital y acceso rápido al ciclo menstrual
+/// (solo si `biologicalSex == FEMALE`, mismo gate que `dashboard.component.ts`).
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
@@ -34,8 +35,8 @@ class DashboardScreen extends ConsumerWidget {
           title: Text(l10n.dashboardTitle),
           actions: [
             IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () => ref.read(authProvider.notifier).logout(),
+              icon: const Icon(Icons.person_outline),
+              onPressed: () => context.push('/profile'),
             ),
           ],
         ),
@@ -99,6 +100,14 @@ class DashboardScreen extends ConsumerWidget {
                   icon: const Icon(Icons.medication_outlined),
                   label: Text(l10n.dashboardMedications),
                 ),
+                if (session?.patient?.biologicalSex == BiologicalSex.female) ...[
+                  const SizedBox(height: 8),
+                  FilledButton.tonalIcon(
+                    onPressed: () => context.push('/cycle'),
+                    icon: const Icon(Icons.calendar_month_outlined),
+                    label: Text(l10n.dashboardCycle),
+                  ),
+                ],
               ],
             ),
           ),

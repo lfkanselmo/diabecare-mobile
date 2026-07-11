@@ -829,5 +829,126 @@
   "dashboardRegisterMeal": "Registrar comida",
   "dashboardVitals": "Vitales y ejercicio",
   "dashboardMedications": "Medicamentos",
-  "dashboardLatestVitalTitle": "Últimos signos vitales"
+  "dashboardLatestVitalTitle": "Últimos signos vitales",
+  "dashboardCycle": "Ciclo menstrual",
+
+  "cycleDayEntrySuccessMessage": "Día registrado",
+  "cycleDayEntryErrorMessage": "No se pudo guardar este día",
+  "cycleDayEntryTitle": "Registrar hoy",
+  "cycleDayEntryFlowIntensity": "Flujo",
+  "cycleDayEntrySymptoms": "Síntomas",
+  "cycleDayEntrySymptomsHint": "Toca para alternar entre leve / moderado / severo",
+  "cycleDayEntryNotes": "Notas",
+  "cycleDayEntrySaving": "Guardando…",
+  "cycleDayEntrySave": "Guardar",
+  "cycleErrorMessage": "Algo salió mal",
+  "cycleTitle": "Ciclo menstrual",
+  "cycleDayOfCycle": "Día {day} del ciclo",
+  "@cycleDayOfCycle": {
+    "placeholders": {
+      "day": {}
+    }
+  },
+  "cycleNextStart": "Próximo período esperado: {date}",
+  "@cycleNextStart": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "cycleProjectionStale": "Esta proyección puede estar desactualizada — registra un nuevo ciclo cuando comience tu período",
+  "cycleFinishPeriod": "Finalizar período",
+  "cycleStartPeriod": "Iniciar período",
+  "cycleLogToday": "Registrar hoy",
+  "cycleHistoryTitle": "Historial",
+  "cycleHistoryEmpty": "Todavía no registraste ciclos",
+  "cycleOngoing": "En curso",
+  "cycleDaysSuffix": "días",
+
+  "reportTitle": "Reporte médico",
+  "reportDescription": "Genera un resumen en PDF de tus datos de glucosa para compartir con tu equipo médico.",
+  "reportRange": "Rango de fechas",
+  "reportLast7Days": "Últimos 7 días",
+  "reportLast14Days": "Últimos 14 días",
+  "reportLast30Days": "Últimos 30 días",
+  "reportLast90Days": "Últimos 90 días",
+  "reportGenerate": "Generar y compartir",
+  "reportGenerating": "Generando…",
+  "reportErrorMessage": "No se pudo generar el reporte",
+
+  "caregiverPatientViewTitle": "Resumen del paciente",
+  "caregiversInviteTitle": "Código de invitación",
+  "caregiversInviteCode": "Comparte este código: {code}",
+  "@caregiversInviteCode": {
+    "placeholders": {
+      "code": {}
+    }
+  },
+  "caregiversClose": "Cerrar",
+  "caregiversErrorMessage": "Algo salió mal",
+  "caregiversRevokeTitle": "Revocar acceso",
+  "caregiversRevokeMessage": "¿Revocar el acceso de {name} a tus datos?",
+  "@caregiversRevokeMessage": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "caregiversRevokeConfirm": "Revocar",
+  "caregiversCancel": "Cancelar",
+  "caregiversRedeemTitle": "Canjear código de invitación",
+  "caregiversRedeemHint": "Código de invitación",
+  "caregiversRedeemConfirm": "Canjear",
+  "caregiversRedeemSuccess": "Ahora tienes acceso de solo lectura a {name}",
+  "@caregiversRedeemSuccess": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "caregiversRedeemError": "Código inválido o expirado",
+  "caregiversTitle": "Cuidadores",
+  "caregiversTabMine": "Mis cuidadores",
+  "caregiversTabPatients": "Pacientes que cuido",
+  "caregiversCreateInvite": "Invitar a un cuidador",
+  "caregiversNoLinks": "Todavía no tienes cuidadores vinculados",
+  "caregiversNoPatients": "Todavía no tienes acceso de solo lectura a ningún paciente",
+
+  "profileTitle": "Perfil",
+  "profileBiometricLock": "Exigir desbloqueo biométrico",
+  "profileInsulinProfile": "Perfil de insulina",
+  "profileCaregivers": "Cuidadores",
+  "profileReports": "Reportes médicos",
+  "profileAccount": "Cuenta",
+  "profileLogout": "Cerrar sesión",
+
+  "accountErrorMessage": "Algo salió mal",
+  "accountLogoutAllTitle": "Cerrar sesión en todos los dispositivos",
+  "accountLogoutAllMessage": "Esto terminará todas las sesiones activas, incluida esta.",
+  "accountLogoutAllConfirm": "Cerrar sesión en todos lados",
+  "accountCancel": "Cancelar",
+  "accountSuspendTitle": "Suspender cuenta",
+  "accountSuspendMessage": "Tu cuenta se desactivará de inmediato. Puedes recuperarla iniciando sesión de nuevo antes de que se elimine permanentemente.",
+  "accountSuspendConfirm": "Suspender",
+  "accountDeleteTitle": "Eliminar cuenta",
+  "accountDeleteMessage": "Tu acceso se desactivará de inmediato, y tus datos de salud se eliminarán permanentemente 30 días después, salvo que recuperes tu cuenta antes de ese plazo.",
+  "accountDeleteConfirm": "Eliminar",
+  "accountGenerateKeyTitle": "Generar API key de dispositivo",
+  "accountKeyLabel": "Etiqueta",
+  "accountGenerateKeyConfirm": "Generar",
+  "accountKeyGeneratedTitle": "Copia esta clave ahora",
+  "accountClose": "Cerrar",
+  "accountRevokeKeyTitle": "Revocar clave",
+  "accountRevokeKeyMessage": "¿Revocar la clave \"{label}\"? Cualquier dispositivo que la use dejará de funcionar.",
+  "@accountRevokeKeyMessage": {
+    "placeholders": {
+      "label": {}
+    }
+  },
+  "accountRevokeKeyConfirm": "Revocar",
+  "accountTitle": "Cuenta",
+  "accountTabAccount": "Cuenta",
+  "accountTabDevices": "Dispositivos",
+  "accountExportData": "Exportar mis datos",
+  "accountSessionsTitle": "Sesiones activas",
+  "accountDangerZone": "Zona de riesgo",
+  "accountNoKeys": "Todavía no tienes API keys de dispositivo",
+  "accountKeyRevoked": "Revocada"
 }
