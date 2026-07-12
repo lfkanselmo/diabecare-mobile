@@ -233,6 +233,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> with SingleTicker
                                     ? null
                                     : IconButton(
                                         icon: const Icon(Icons.delete_outline),
+                                        tooltip: l10n.accountRevokeKeyTitle,
                                         onPressed: () => _revokeKey(key),
                                       ),
                               ),

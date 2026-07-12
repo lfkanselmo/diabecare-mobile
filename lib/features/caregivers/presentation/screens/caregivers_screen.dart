@@ -155,6 +155,7 @@ class _CaregiversScreenState extends ConsumerState<CaregiversScreen> with Single
                                 isThreeLine: true,
                                 trailing: IconButton(
                                   icon: const Icon(Icons.person_remove_outlined),
+                                  tooltip: l10n.caregiversRevokeTitle,
                                   onPressed: () => _revokeLink(link),
                                 ),
                               ),

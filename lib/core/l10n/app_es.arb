@@ -950,5 +950,36 @@
   "accountSessionsTitle": "Sesiones activas",
   "accountDangerZone": "Zona de riesgo",
   "accountNoKeys": "Todavía no tienes API keys de dispositivo",
-  "accountKeyRevoked": "Revocada"
+  "accountKeyRevoked": "Revocada",
+
+  "profileAdmin": "Administración",
+
+  "adminTitle": "Administración",
+  "adminChangeRoleTitle": "Cambiar rol",
+  "adminChangeRoleMessage": "¿Cambiar el rol de {email} a {role}?",
+  "@adminChangeRoleMessage": {
+    "placeholders": {
+      "email": {},
+      "role": {}
+    }
+  },
+  "adminChangeRoleConfirm": "Cambiar rol",
+  "adminCancel": "Cancelar",
+  "adminErrorMessage": "Algo salió mal",
+  "adminReloadConfig": "Recargar configuración",
+  "adminConfigReloaded": "Configuración recargada",
+  "adminSuspended": "Suspendido",
+  "adminDeleted": "Eliminado",
+  "adminDemote": "Degradar",
+  "adminPromote": "Ascender",
+  "adminThatsYou": "Eres tú",
+  "adminPreviousPage": "Página anterior",
+  "adminNextPage": "Página siguiente",
+  "adminPageIndicator": "Página {current} de {total}",
+  "@adminPageIndicator": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  }
 }

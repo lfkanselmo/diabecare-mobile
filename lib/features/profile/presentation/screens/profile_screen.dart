@@ -85,6 +85,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               title: Text(l10n.profileAccount),
               onTap: () => context.push('/account'),
             ),
+            if (session?.isAdmin ?? false)
+              ListTile(
+                leading: const Icon(Icons.admin_panel_settings_outlined),
+                title: Text(l10n.profileAdmin),
+                onTap: () => context.push('/admin'),
+              ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),

@@ -950,5 +950,36 @@
   "accountSessionsTitle": "Active sessions",
   "accountDangerZone": "Danger zone",
   "accountNoKeys": "No device API keys yet",
-  "accountKeyRevoked": "Revoked"
+  "accountKeyRevoked": "Revoked",
+
+  "profileAdmin": "Administration",
+
+  "adminTitle": "Administration",
+  "adminChangeRoleTitle": "Change role",
+  "adminChangeRoleMessage": "Change {email}'s role to {role}?",
+  "@adminChangeRoleMessage": {
+    "placeholders": {
+      "email": {},
+      "role": {}
+    }
+  },
+  "adminChangeRoleConfirm": "Change role",
+  "adminCancel": "Cancel",
+  "adminErrorMessage": "Something went wrong",
+  "adminReloadConfig": "Reload configuration",
+  "adminConfigReloaded": "Configuration reloaded",
+  "adminSuspended": "Suspended",
+  "adminDeleted": "Deleted",
+  "adminDemote": "Demote",
+  "adminPromote": "Promote",
+  "adminThatsYou": "That's you",
+  "adminPreviousPage": "Previous page",
+  "adminNextPage": "Next page",
+  "adminPageIndicator": "Page {current} of {total}",
+  "@adminPageIndicator": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  }
 }

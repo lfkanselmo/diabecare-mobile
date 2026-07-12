@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../features/admin/presentation/screens/admin_screen.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -69,6 +70,7 @@ GoRouter appRouter(Ref ref) {
       ),
       GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
       GoRoute(path: '/account', builder: (context, state) => const AccountScreen()),
+      GoRoute(path: '/admin', builder: (context, state) => const AdminScreen()),
       GoRoute(path: '/auth/login', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/auth/register', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/auth/forgot-password', builder: (context, state) => const ForgotPasswordScreen()),
@@ -82,10 +84,16 @@ GoRouter appRouter(Ref ref) {
 
 /// Reproduce `auth.guard.ts`: token válido → pasa; sin token pero con
 /// refresh token → intenta refresh proactivo; si no → redirige a login.
+/// `/admin` además reproduce `admin.guard.ts`: sin rol ADMIN, redirige al
+/// dashboard en vez de dejar pasar (el backend igual lo exige aparte).
 Future<String?> _redirect(AuthRepository authRepository, GoRouterState state) async {
   final goingToAuth = state.matchedLocation.startsWith('/auth');
 
   if (await authRepository.isAuthenticated()) {
+    if (state.matchedLocation == '/admin') {
+      final session = await authRepository.loadSession();
+      if (session?.isAdmin != true) return '/';
+    }
     return goingToAuth ? '/' : null;
   }
 

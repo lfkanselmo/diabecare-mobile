@@ -60,6 +60,7 @@ class MedicationListScreen extends ConsumerWidget {
                         subtitle: Text('${medication.dose} ${medication.doseUnit.wireValue} — ${medication.frequency.wireValue}'),
                         trailing: IconButton(
                           icon: const Icon(Icons.remove_circle_outline),
+                          tooltip: l10n.medicationsDeactivateTitle,
                           onPressed: () => _deactivate(context, ref, medication),
                         ),
                       ),

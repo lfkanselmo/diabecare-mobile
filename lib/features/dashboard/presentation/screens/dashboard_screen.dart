@@ -36,6 +36,7 @@ class DashboardScreen extends ConsumerWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.person_outline),
+              tooltip: l10n.profileTitle,
               onPressed: () => context.push('/profile'),
             ),
           ],

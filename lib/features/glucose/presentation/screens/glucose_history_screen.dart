@@ -65,6 +65,7 @@ class _GlucoseHistoryScreenState extends ConsumerState<GlucoseHistoryScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
+            tooltip: l10n.dashboardRegisterGlucose,
             onPressed: () => context.push('/glucose/register'),
           ),
         ],
@@ -139,6 +140,7 @@ class _GlucoseHistoryScreenState extends ConsumerState<GlucoseHistoryScreen> {
                         subtitle: Text('${reading.readingType.wireValue} · ${reading.measuredAt}'),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete_outline),
+                          tooltip: l10n.commonDelete,
                           onPressed: () => _delete(reading),
                         ),
                       );

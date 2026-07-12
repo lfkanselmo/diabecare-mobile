@@ -25,6 +25,9 @@ jobs:
       - name: Generar código (Riverpod/Drift)
         run: dart run build_runner build
 
+      - name: Verificar paridad i18n (es/en)
+        run: dart run tool/check_arb_parity.dart
+
       - name: Analizar
         run: flutter analyze
 

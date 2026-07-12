@@ -233,7 +233,11 @@ class _MealRegisterScreenState extends ConsumerState<MealRegisterScreen> {
                     child: ListTile(
                       title: Text(item.foodName),
                       subtitle: Text('${item.quantityGrams.toStringAsFixed(0)}g — ${item.calories} kcal'),
-                      trailing: IconButton(icon: const Icon(Icons.delete), onPressed: () => _removeItem(item.id)),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete),
+                        tooltip: l10n.commonDelete,
+                        onPressed: () => _removeItem(item.id),
+                      ),
                     ),
                   ),
                 ),
