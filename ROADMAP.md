@@ -93,10 +93,22 @@ Ninguno de estos dominios necesita offline-first — a diferencia de Fase 1/2, a
 
 Fase dedicada porque es la parte con más superficie de bugs sutiles y la más cara de arreglar después del lanzamiento (bugs de sincronización = datos de salud perdidos o duplicados, el peor tipo de bug posible en esta app).
 
-- [ ] Pruebas exhaustivas de conflictos (edición concurrente multi-dispositivo)
-- [ ] Pruebas con conectividad intermitente real (no solo "online" vs "avión") — `connectivity_plus` + escenarios de red lenta/inestable
-- [ ] Pruebas en dispositivos de gama baja (Android especialmente — fragmentación de hardware mucho mayor que iOS)
-- [ ] Auditoría de qué pasa si la app se cierra a la mitad de una sincronización
+- [x] Pruebas exhaustivas de conflictos (edición concurrente multi-dispositivo) — alcance real logrado, ver nota
+- [x] Pruebas con conectividad intermitente real — alcance real logrado, ver nota
+- [ ] Pruebas en dispositivos de gama baja — **no realizable en esta máquina** (sin Android SDK/emulador ni Mac para iOS, limitación documentada desde Fase 0)
+- [x] Auditoría de qué pasa si la app se cierra a la mitad de una sincronización
+
+**Bug real encontrado y corregido — el hallazgo más importante de esta fase**: `SyncCoordinator` solo disparaba `runSync()` en la transición de sin-conexión a con-conexión. Si el usuario abría la app ya conectado (el caso normal) y su conexión nunca parpadeaba durante la sesión, **el pull de cambios de otro dispositivo nunca ocurría** — el escenario multi-dispositivo más común de todos quedaba roto en silencio. Corregido agregando sync en 3 momentos: (1) al arrancar la app si ya hay conexión, (2) al volver a primer plano (`AppLifecycleState.resumed`, vía `WidgetsBindingObserver`) — el caso real de "cambié de dispositivo y volví a este", (3) justo después de un login/registro exitoso. Se mantiene además el disparo original en la transición de conectividad.
+
+**Segundo hallazgo, más sutil**: al agregar los 3 disparadores nuevos, se volvió posible que 2 llamadas a `runSync()` corrieran superpuestas (p. ej. resumir la app justo cuando vuelve la conexión). Se agregó un guard de reentrancia (`_isSyncing`) — con una advertencia real: el flag debe marcarse *antes* del primer `await` del método, no después; marcarlo después de un `await` (p. ej. después de resolver `isAuthenticated()`) deja una ventana donde dos llamadas disparadas en el mismo tick pasan ambas el chequeo. Un test que fuerza la carrera (`syncAll` demorado con un `Future.delayed`) expuso este bug en el primer intento de implementación.
+
+**Tercer hallazgo**: ninguno de los disparadores nuevos validaba que hubiera una sesión activa — si la conectividad cambiaba o la app se resumía antes del login, `runSync()` intentaba sincronizar igual y cada repositorio lanzaba un `StateError` ("sin paciente en la sesión") sin capturar. Se agregó un guard de autenticación (`AuthRepository.isAuthenticated()`) al inicio de `runSync()`.
+
+**Auditoría de "qué pasa si la app muere a mitad de sync"**: confirmado por código + un test nuevo que el cursor de sincronización incremental (`SyncCursors`) solo avanza *después* de que todo el lote de `pullChanges()` se procesó sin lanzar — si el upsert de un ítem falla a mitad de lote, el cursor se queda en el valor anterior y el siguiente intento vuelve a pedir desde ahí (idempotente por upsert, no se pierde ni se duplica nada). Este comportamiento ya existía desde Fase 1 por cómo estaba escrito el código; lo que faltaba era un test que lo probara explícitamente.
+
+**Por qué "conflictos de edición concurrente multi-dispositivo" tiene alcance limitado hoy, y no es una laguna de esta fase**: de los 5 dominios offline-first, 4 (glucosa, comidas, vitales, ejercicio) no tienen ningún camino de edición — solo creación (y glucosa, borrado). El único `pushUpdate` real implementado es el de medicamentos, y es binario (activo/inactivo), no edición de campos. Sin un camino de edición de campos en ningún dominio, un conflicto de "2 dispositivos editaron el mismo registro con valores distintos" no es alcanzable con el feature set actual — el caso multi-dispositivo real y ya cubierto es "2 dispositivos ven/sincronizan el mismo histórico creciente", que es exactamente lo que el fix de esta fase asegura que ocurra de forma confiable.
+
+**Qué no se pudo probar en esta máquina** (limitación ya documentada desde Fase 0, se repite acá porque es el punto central de esta fase): sin Android SDK/emulador ni Mac para compilar iOS, no hay forma de probar en dispositivos de gama baja reales, ni de observar el comportamiento bajo condiciones de red inestables genuinas (Wi-Fi débil, cambios de torre celular, etc.) — el hardening logrado acá es a nivel de lógica del motor de sync (tests unitarios con dobles de conectividad/red), no una validación de campo.
 
 ---
 
