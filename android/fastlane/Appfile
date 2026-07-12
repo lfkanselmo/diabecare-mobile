@@ -1,0 +1,9 @@
+# Fase 6 (ROADMAP.md) — scaffold sin credenciales reales todavía.
+#
+# json_key_file: ruta a la cuenta de servicio de Google Play (Play Console →
+# Configuración → Acceso a la API → crear cuenta de servicio, descargar el
+# JSON). NO commitear ese archivo — agregarlo a .gitignore y pasarlo por
+# variable de entorno o secret de CI en su lugar.
+json_key_file(ENV["GOOGLE_PLAY_JSON_KEY_PATH"] || "fastlane/play-store-credentials.json")
+
+package_name("com.diabecare.diabecare_mobile")

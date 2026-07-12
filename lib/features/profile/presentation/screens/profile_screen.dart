@@ -91,6 +91,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 title: Text(l10n.profileAdmin),
                 onTap: () => context.push('/admin'),
               ),
+            ListTile(
+              leading: const Icon(Icons.privacy_tip_outlined),
+              title: Text(l10n.legalPrivacyTitle),
+              onTap: () => context.push('/legal/privacy'),
+            ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),

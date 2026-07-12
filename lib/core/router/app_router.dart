@@ -13,6 +13,7 @@ import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../../features/glucose/presentation/screens/agp_chart_screen.dart';
 import '../../features/glucose/presentation/screens/glucose_history_screen.dart';
 import '../../features/glucose/presentation/screens/glucose_register_screen.dart';
+import '../../features/legal/presentation/screens/privacy_policy_screen.dart';
 import '../../features/medications/presentation/screens/insulin_calculator_screen.dart';
 import '../../features/medications/presentation/screens/insulin_profile_screen.dart';
 import '../../features/medications/presentation/screens/medication_list_screen.dart';
@@ -78,6 +79,7 @@ GoRouter appRouter(Ref ref) {
         path: '/auth/reset-password',
         builder: (context, state) => ResetPasswordScreen(token: state.uri.queryParameters['token']),
       ),
+      GoRoute(path: '/legal/privacy', builder: (context, state) => const PrivacyPolicyScreen()),
     ],
   );
 }
@@ -86,7 +88,11 @@ GoRouter appRouter(Ref ref) {
 /// refresh token → intenta refresh proactivo; si no → redirige a login.
 /// `/admin` además reproduce `admin.guard.ts`: sin rol ADMIN, redirige al
 /// dashboard en vez de dejar pasar (el backend igual lo exige aparte).
+/// `/legal/privacy` es pública a propósito, igual que en la web (`app.routes.ts`
+/// la deja fuera del `authGuard`) — el registro enlaza ahí antes de que exista sesión.
 Future<String?> _redirect(AuthRepository authRepository, GoRouterState state) async {
+  if (state.matchedLocation.startsWith('/legal')) return null;
+
   final goingToAuth = state.matchedLocation.startsWith('/auth');
 
   if (await authRepository.isAuthenticated()) {

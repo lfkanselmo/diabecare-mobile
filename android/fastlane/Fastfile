@@ -1,0 +1,39 @@
+# Fase 6 (ROADMAP.md) — lanes de build + firma + subida a Google Play.
+# Scaffold funcional en cuanto a sintaxis; requiere secretos reales que hoy
+# no existen (cuenta de servicio de Play Console, keystore de firma) — ver
+# RELEASE_CHECKLIST.md para la lista completa de lo que falta antes de poder
+# correr esto de verdad.
+
+default_platform(:android)
+
+platform :android do
+  desc "Build de un AAB de release firmado"
+  lane :build do
+    sh("flutter build appbundle --release")
+  end
+
+  desc "Sube a la pista interna de Google Play (Internal Testing)"
+  lane :internal do
+    build
+    upload_to_play_store(
+      track: "internal",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Promueve el build de la pista interna a producción — usar solo tras aprobar la beta"
+  lane :promote_to_production do
+    upload_to_play_store(
+      track: "internal",
+      track_promote_to: "production",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end

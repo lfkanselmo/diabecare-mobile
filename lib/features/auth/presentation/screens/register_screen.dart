@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -217,7 +218,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           CheckboxListTile(
             value: _termsAccepted,
             onChanged: (value) => setState(() => _termsAccepted = value ?? false),
-            title: Text('${l10n.authRegisterTermsPrefix} ${l10n.authRegisterTermsLink}'),
+            title: RichText(
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: [
+                  TextSpan(text: '${l10n.authRegisterTermsPrefix} '),
+                  TextSpan(
+                    text: l10n.authRegisterTermsLink,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()..onTap = () => context.push('/legal/privacy'),
+                  ),
+                ],
+              ),
+            ),
             controlAffinity: ListTileControlAffinity.leading,
           ),
           const SizedBox(height: 8),

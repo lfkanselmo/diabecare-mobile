@@ -35,5 +35,16 @@ ios/Flutter/Flutter.podspec
 .env
 *.keystore
 
+# Fastlane (Fase 6) — nunca commitear credenciales reales
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/**/*.png
+**/fastlane/test_output
+**/fastlane/play-store-credentials.json
+**/fastlane/*.p8
+**/fastlane/*.p12
+**/fastlane/*.mobileprovision
+**/fastlane/*.cer
+
 # OS
 .DS_Store

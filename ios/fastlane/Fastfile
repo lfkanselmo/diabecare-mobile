@@ -1,0 +1,33 @@
+# Fase 6 (ROADMAP.md) — lanes de build + firma + subida a TestFlight/App Store.
+# Scaffold funcional en cuanto a sintaxis; requiere secretos reales que hoy
+# no existen (API key de App Store Connect, certificados de firma vía
+# match/fastlane) — ver RELEASE_CHECKLIST.md.
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build de un IPA de release firmado"
+  lane :build do
+    sh("flutter build ipa --release")
+  end
+
+  desc "Sube a TestFlight"
+  lane :beta do
+    build
+    upload_to_testflight(
+      ipa: "../build/ios/ipa/diabecare_mobile.ipa",
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Envía a revisión de App Store — usar solo tras aprobar la beta"
+  lane :release do
+    build
+    upload_to_app_store(
+      ipa: "../build/ios/ipa/diabecare_mobile.ipa",
+      submit_for_review: false,
+      automatic_release: false,
+      force: true
+    )
+  end
+end

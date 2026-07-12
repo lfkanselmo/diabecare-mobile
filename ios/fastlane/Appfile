@@ -1,0 +1,5 @@
+# Fase 6 (ROADMAP.md) — scaffold sin credenciales reales todavía.
+app_identifier("com.diabecare.diabecareMobile")
+apple_id(ENV["APPLE_ID"] || "CAMBIAR@ejemplo.com")
+itc_team_id(ENV["APP_STORE_CONNECT_TEAM_ID"] || "")
+team_id(ENV["APPLE_DEVELOPER_TEAM_ID"] || "")
