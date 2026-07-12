@@ -23,14 +23,17 @@ class _MockGlucoseApiClient extends Mock implements GlucoseApiClient {}
 class _MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(const GlucoseReadingsCompanion());
+  });
+
   late _MockGlucoseDao dao;
   late _MockGlucoseApiClient apiClient;
   late _MockAuthRepository authRepository;
   late GlucoseRepositoryImpl repository;
 
-  // Una sola instancia para todo el archivo — ninguno de estos tests llama a
-  // `pullChanges()` (el único método que la toca), y Drift avisa si detecta
-  // la misma clase de base de datos instanciada más de una vez.
+  // Una sola instancia para todo el archivo — Drift avisa si detecta la
+  // misma clase de base de datos instanciada más de una vez.
   final database = AppDatabase(NativeDatabase.memory());
 
   final patient = Patient(
@@ -201,5 +204,52 @@ void main() {
 
     verify(() => dao.markPendingDelete('r1')).called(1);
     verifyNever(() => dao.deleteById(any()));
+  });
+
+  // Fase 5 (ROADMAP.md — hardening del motor offline): si la app muere a
+  // mitad de un pullChanges, el cursor no debe haber avanzado — de lo
+  // contrario el siguiente intento arrancaría desde un `since` que se saltea
+  // el ítem que falló, perdiéndolo para siempre.
+  test('pullChanges no avanza el cursor si falla el upsert de un ítem a mitad del lote', () async {
+    when(() => apiClient.sync(patientId: any(named: 'patientId'), since: any(named: 'since'))).thenAnswer(
+      (_) async => [
+        GlucoseReadingResponseDto(
+          readingId: 'r1',
+          value: 100,
+          unit: 'MG_DL',
+          readingType: 'FASTING',
+          status: 'NORMAL',
+          measuredAt: DateTime(2026, 1, 1),
+          notes: null,
+          deviceSource: null,
+          updatedAt: DateTime(2026, 1, 1),
+        ),
+        GlucoseReadingResponseDto(
+          readingId: 'r2',
+          value: 110,
+          unit: 'MG_DL',
+          readingType: 'FASTING',
+          status: 'NORMAL',
+          measuredAt: DateTime(2026, 1, 2),
+          notes: null,
+          deviceSource: null,
+          updatedAt: DateTime(2026, 1, 2),
+        ),
+      ],
+    );
+
+    var upsertCalls = 0;
+    when(() => dao.upsert(any())).thenAnswer((_) async {
+      upsertCalls++;
+      if (upsertCalls == 2) throw StateError('fallo simulado a mitad de lote');
+    });
+
+    await expectLater(repository.pullChanges(), throwsA(isA<StateError>()));
+
+    final cursor = await (database.select(
+      database.syncCursors,
+    )..where((t) => t.resource.equals('glucose'))).getSingleOrNull();
+    expect(cursor, isNull);
+    expect(upsertCalls, 2);
   });
 }

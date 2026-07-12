@@ -4,6 +4,7 @@ import '../../features/glucose/presentation/providers/glucose_providers.dart';
 import '../../features/medications/presentation/providers/medication_providers.dart';
 import '../../features/nutrition/presentation/providers/nutrition_providers.dart';
 import '../../features/vitals/presentation/providers/vitals_providers.dart';
+import '../network/network_providers.dart';
 import 'sync_coordinator.dart';
 import 'sync_service.dart';
 import 'syncable_repository.dart';
@@ -30,6 +31,7 @@ SyncService syncService(Ref ref) {
 SyncCoordinator syncCoordinator(Ref ref) {
   final coordinator = SyncCoordinator(
     syncService: ref.watch(syncServiceProvider),
+    authRepository: ref.watch(authRepositoryProvider),
     pullers: [
       () => ref.watch(glucoseRepositoryProvider).pullChanges(),
       () => ref.watch(mealRepositoryProvider).pullChanges(),

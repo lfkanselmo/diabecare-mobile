@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/network/network_providers.dart';
+import '../../../../core/sync/sync_providers.dart';
 import '../../domain/entities/auth_session.dart';
 import '../../domain/entities/register_data.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -25,11 +28,23 @@ class Auth extends _$Auth {
     state = await AsyncValue.guard(
       () => _repository.login(email: email, password: password),
     );
+    _syncAfterAuthChangeIfNeeded();
   }
 
   Future<void> register(RegisterData data) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => _repository.register(data));
+    _syncAfterAuthChangeIfNeeded();
+  }
+
+  /// El primer login/registro en un dispositivo es, junto con volver a
+  /// primer plano, uno de los 2 momentos reales en que un dispositivo nuevo
+  /// necesita jalar todo el histórico existente sin esperar a que la
+  /// conectividad parpadee (ver `SyncCoordinator`, Fase 5 en ROADMAP.md).
+  void _syncAfterAuthChangeIfNeeded() {
+    if (state.hasValue && state.value != null) {
+      unawaited(ref.read(syncCoordinatorProvider).runSync());
+    }
   }
 
   Future<void> logout() async {
