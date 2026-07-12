@@ -77,9 +77,15 @@ Ninguno de estos dominios necesita offline-first — a diferencia de Fase 1/2, a
 
 ## Fase 4 — Administración, i18n y accesibilidad
 
-- [ ] Panel de administración (rol ADMIN)
-- [ ] Auditoría de paridad i18n (script de Fase 0 corriendo en CI, falla el build si es/en divergen)
-- [ ] Auditoría de accesibilidad completa (VoiceOver + TalkBack en cada pantalla, Dynamic Type, contraste)
+- [x] Panel de administración (rol ADMIN)
+- [x] Auditoría de paridad i18n (`tool/check_arb_parity.dart` corriendo en CI, falla el build si es/en divergen)
+- [x] Auditoría de accesibilidad — alcance real logrado, ver nota abajo
+
+**Panel de administración**: listar usuarios (paginado), cambiar rol PATIENT↔ADMIN (con confirmación, oculto para la propia fila del admin — mismo `currentUserId === user.id` que `admin.component.html`), recargar configuración del sistema. No necesitó cambios de backend — `AdminController`/`SystemConfigController` ya existían completos y funcionaban tal cual.
+
+**Auditoría de i18n**: `tool/check_arb_parity.dart` compara las claves de `app_es.arb`/`app_en.arb` (sin regenerar nada — a diferencia de `generate_arb.dart`, que sobreescribiría las claves mobile-only agregadas a mano desde Fase 1) y falla el build si divergen. Confirmado en verde con las 752 claves actuales antes de wirearlo a CI.
+
+**Auditoría de accesibilidad — alcance real** (sin Android SDK/emulador ni Mac para compilar iOS, no se pudo probar con VoiceOver/TalkBack activados como pide el ítem original — limitación ya documentada desde Fase 0): auditoría de código contra los 2 requisitos concretos de `DESIGN_GUIDELINES.md` sección 6. (1) Ningún tamaño de fuente hardcodeado en toda la app (confirmado por grep, nada que corregir — Dynamic Type/escalado de fuente del sistema ya funciona en todos lados). (2) Se encontraron y corrigieron 9 `IconButton` interactivos sin `tooltip` (que en Flutter dobla como etiqueta semántica para lectores de pantalla) — sin este atributo, VoiceOver/TalkBack no anuncia nada útil al enfocar esos botones. El color del tema usa `ColorScheme.fromSeed` (Material 3), que garantiza contraste accesible en los pares `on*` derivados — no se tocó, ya es accesible por construcción.
 
 ---
 
