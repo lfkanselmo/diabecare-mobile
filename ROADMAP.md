@@ -114,10 +114,26 @@ Fase dedicada porque es la parte con más superficie de bugs sutiles y la más c
 
 ## Fase 6 — Beta y publicación
 
-- [ ] TestFlight (iOS) + Internal/Closed Testing (Google Play) con un grupo reducido de usuarios reales
-- [ ] Fastlane: lanes de build + firma + subida automatizada
-- [ ] Assets de store: screenshots (por tamaño de dispositivo requerido en cada store), descripción, política de privacidad pública
-- [ ] **App Privacy details (Apple)** y **Data Safety form (Google Play)** — declaraciones obligatorias de qué datos se recolectan y para qué; dado que es una app de salud, revisar esto con cuidado particular, son de los primeros puntos que un revisor de cualquiera de las dos stores va a escrutar
+La mayoría de esta fase no son tareas de código — necesitan cuentas reales de
+desarrollador (Apple/Google), un Mac para iOS, y decisiones de negocio. Ver
+`RELEASE_CHECKLIST.md` para el detalle completo de qué quedó listo en el
+repo y qué depende de continuarse fuera de esta máquina.
+
+- [x] Política de privacidad pública dentro de la app (`/legal/privacy`) — ya
+      existía el texto (scrapeado del mismo JSON que usa la web desde Fase 0),
+      faltaba la pantalla y el enlace tappable real desde el registro (antes
+      era texto plano, no un link) y desde el perfil.
+- [x] **App Privacy details (Apple)** y **Data Safety form (Google Play)** —
+      redactadas a partir de una auditoría real del código (qué SDKs hablan
+      con servidores externos, qué envía cada `*_api_client.dart`), ver
+      `PRIVACY_DECLARATIONS.md`. Los formularios en sí son web dentro de cada
+      consola de desarrollador, no se pueden completar por API.
+- [x] Fastlane: lanes de build + firma + subida (`android/fastlane/`,
+      `ios/fastlane/`) — scaffold con sintaxis real, pendiente de credenciales
+      reales que esta sesión no tiene (cuenta de servicio de Play, API key de
+      App Store Connect, certificados de firma).
+- [ ] TestFlight (iOS) + Internal/Closed Testing (Google Play) con un grupo reducido de usuarios reales — **requiere cuentas de desarrollador reales y un Mac para iOS**, no realizable en esta máquina
+- [ ] Assets de store: screenshots (por tamaño de dispositivo requerido en cada store), descripción, ícono final — **requiere un dispositivo/emulador real** para las capturas, y decisiones de producto/marketing para el resto
 - [ ] Publicación
 
 ---
