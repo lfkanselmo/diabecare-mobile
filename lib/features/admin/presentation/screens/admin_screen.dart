@@ -35,7 +35,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
   }
 
   void _load() {
-    setState(() => _pageFuture = ref.read(adminRepositoryProvider).getUsers(page: _page, size: _pageSize));
+    setState(() {
+      _pageFuture = ref.read(adminRepositoryProvider).getUsers(page: _page, size: _pageSize);
+    });
   }
 
   Future<void> _toggleRole(AdminUser user) async {

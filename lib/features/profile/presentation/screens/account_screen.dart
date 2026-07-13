@@ -37,11 +37,15 @@ class _AccountScreenState extends ConsumerState<AccountScreen> with SingleTicker
   }
 
   void _refreshSessions() {
-    setState(() => _sessionsFuture = ref.read(accountRepositoryProvider).getActiveSessions());
+    setState(() {
+      _sessionsFuture = ref.read(accountRepositoryProvider).getActiveSessions();
+    });
   }
 
   void _refreshKeys() {
-    setState(() => _keysFuture = ref.read(accountRepositoryProvider).listDeviceApiKeys());
+    setState(() {
+      _keysFuture = ref.read(accountRepositoryProvider).listDeviceApiKeys();
+    });
   }
 
   Future<void> _exportData() async {

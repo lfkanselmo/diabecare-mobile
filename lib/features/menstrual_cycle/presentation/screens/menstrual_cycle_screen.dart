@@ -27,7 +27,9 @@ class _MenstrualCycleScreenState extends ConsumerState<MenstrualCycleScreen> {
   }
 
   void _refresh() {
-    setState(() => _statusFuture = ref.read(menstrualCycleRepositoryProvider).getStatus());
+    setState(() {
+      _statusFuture = ref.read(menstrualCycleRepositoryProvider).getStatus();
+    });
   }
 
   Future<void> _startPeriod() async {

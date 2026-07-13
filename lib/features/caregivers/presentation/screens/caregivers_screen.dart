@@ -36,11 +36,15 @@ class _CaregiversScreenState extends ConsumerState<CaregiversScreen> with Single
   }
 
   void _refreshLinks() {
-    setState(() => _linksFuture = ref.read(caregiverRepositoryProvider).getLinks());
+    setState(() {
+      _linksFuture = ref.read(caregiverRepositoryProvider).getLinks();
+    });
   }
 
   void _refreshPatients() {
-    setState(() => _patientsFuture = ref.read(caregiverRepositoryProvider).getMyPatients());
+    setState(() {
+      _patientsFuture = ref.read(caregiverRepositoryProvider).getMyPatients();
+    });
   }
 
   Future<void> _createInvite() async {
