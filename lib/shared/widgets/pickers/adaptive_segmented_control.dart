@@ -26,7 +26,7 @@ class AdaptiveSegmentedControl<T extends Object> extends StatelessWidget {
           for (final entry in options.entries)
             entry.key: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              child: Text(entry.value),
+              child: Text(entry.value, maxLines: 1, overflow: TextOverflow.ellipsis),
             ),
         },
         onValueChanged: (value) {
@@ -36,7 +36,13 @@ class AdaptiveSegmentedControl<T extends Object> extends StatelessWidget {
     }
 
     return SegmentedButton<T>(
-      segments: [for (final entry in options.entries) ButtonSegment(value: entry.key, label: Text(entry.value))],
+      segments: [
+        for (final entry in options.entries)
+          ButtonSegment(
+            value: entry.key,
+            label: Text(entry.value, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
+      ],
       selected: {selected},
       onSelectionChanged: (values) => onChanged(values.first),
     );
