@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
@@ -130,7 +131,7 @@ class _ExerciseRegisterScreenState extends ConsumerState<ExerciseRegisterScreen>
                 onTap: _pickPerformedAt,
                 child: InputDecorator(
                   decoration: InputDecoration(labelText: l10n.exercisePerformedAt),
-                  child: Text(_performedAt.toString()),
+                  child: Text(DateFormat.yMd(l10n.localeName).add_Hm().format(_performedAt)),
                 ),
               ),
               const SizedBox(height: 16),

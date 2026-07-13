@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
@@ -203,7 +204,7 @@ class _MealRegisterScreenState extends ConsumerState<MealRegisterScreen> {
                 onTap: _pickConsumedAt,
                 child: InputDecorator(
                   decoration: InputDecoration(labelText: l10n.nutritionConsumedAt),
-                  child: Text(_consumedAt.toString()),
+                  child: Text(DateFormat.yMd(l10n.localeName).add_Hm().format(_consumedAt)),
                 ),
               ),
               const SizedBox(height: 24),
