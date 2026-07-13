@@ -177,6 +177,7 @@ class _Hba1cTrendTab extends ConsumerWidget {
     return FutureBuilder<List<Hba1cTrendPoint>>(
       future: ref.read(vitalSignRepositoryProvider).getHba1cTrend(),
       builder: (context, snapshot) {
+        if (snapshot.hasError) return Center(child: Text(l10n.vitalsHba1cTrendErrorMessage));
         if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
         final points = snapshot.data!;
         if (points.isEmpty) return Center(child: Text(l10n.vitalsHba1cTrendEmpty));

@@ -763,6 +763,7 @@
   "vitalsTabExercise": "Exercise",
   "vitalsTabHba1cTrend": "HbA1c trend",
   "vitalsHba1cTrendEmpty": "Not enough data yet",
+  "vitalsHba1cTrendErrorMessage": "Couldn't load the HbA1c trend",
 
   "exerciseRegisterTitle": "Log exercise",
   "exerciseType": "Type",

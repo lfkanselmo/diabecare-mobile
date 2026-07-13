@@ -7,7 +7,7 @@ class Hba1cTrendPoint {
   });
 
   final String month;
-  final double estimatedHba1c;
-  final double averageGlucose;
+  final double? estimatedHba1c;
+  final double? averageGlucose;
   final int totalReadings;
 }

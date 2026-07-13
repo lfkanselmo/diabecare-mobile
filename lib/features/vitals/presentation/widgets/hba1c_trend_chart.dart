@@ -13,12 +13,21 @@ class Hba1cTrendChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (points.isEmpty) {
+    // Meses sin lecturas no traen estimatedHba1c (el backend omite el campo) —
+    // se excluyen del trazo en vez de graficar un falso 0%. Renumerados a un
+    // eje contiguo (0..N) en vez de conservar el índice original: dejar huecos
+    // en el eje X (p.ej. solo índices 4 y 5 de 6) hace que fl_chart calcule un
+    // dominio angosto y genere ticks fraccionarios repetidos.
+    final plottable = [
+      for (final point in points)
+        if (point.estimatedHba1c != null) (month: point.month, hba1c: point.estimatedHba1c!),
+    ];
+    if (plottable.isEmpty) {
       return const Center(child: Text('—'));
     }
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final spots = [for (var i = 0; i < points.length; i++) FlSpot(i.toDouble(), points[i].estimatedHba1c)];
+    final spots = [for (var i = 0; i < plottable.length; i++) FlSpot(i.toDouble(), plottable[i].hba1c)];
 
     return LineChart(
       LineChartData(
@@ -29,10 +38,11 @@ class Hba1cTrendChart extends StatelessWidget {
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
+              interval: 1,
               getTitlesWidget: (value, meta) {
                 final index = value.toInt();
-                if (index < 0 || index >= points.length) return const SizedBox.shrink();
-                return Text(points[index].month, style: Theme.of(context).textTheme.bodySmall);
+                if (index < 0 || index >= plottable.length) return const SizedBox.shrink();
+                return Text(plottable[index].month, style: Theme.of(context).textTheme.bodySmall);
               },
             ),
           ),

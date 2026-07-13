@@ -55,13 +55,13 @@ class Hba1cTrendResponseDto {
 
   factory Hba1cTrendResponseDto.fromJson(Map<String, dynamic> json) => Hba1cTrendResponseDto(
     month: json['month'] as String,
-    estimatedHba1c: (json['estimatedHba1c'] as num).toDouble(),
-    averageGlucose: (json['averageGlucose'] as num).toDouble(),
+    estimatedHba1c: (json['estimatedHba1c'] as num?)?.toDouble(),
+    averageGlucose: (json['averageGlucose'] as num?)?.toDouble(),
     totalReadings: json['totalReadings'] as int,
   );
 
   final String month;
-  final double estimatedHba1c;
-  final double averageGlucose;
+  final double? estimatedHba1c;
+  final double? averageGlucose;
   final int totalReadings;
 }
