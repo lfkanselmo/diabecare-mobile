@@ -29,7 +29,7 @@ class RefreshInterceptor extends Interceptor {
 
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
-    final isAuthEndpoint = err.requestOptions.path.contains(AuthInterceptor.authPathSegment);
+    final isAuthEndpoint = AuthInterceptor.publicAuthPaths.contains(err.requestOptions.path);
     final alreadyRetried = err.requestOptions.extra[_retriedFlag] == true;
     if (err.response?.statusCode != 401 || isAuthEndpoint || alreadyRetried) {
       handler.next(err);
