@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android bloquea tráfico HTTP sin cifrar por defecto desde API 28 — el
+  backend local de desarrollo (Env._devDefault, ver env.dart) corre en HTTP
+  plano en 10.0.2.2 (alias del emulador para el localhost de la máquina
+  host) y en localhost mismo (dispositivo físico con port-forwarding vía
+  `adb reverse`). Esta excepción es intencionalmente angosta: solo cubre
+  esos 2 hosts de desarrollo, nunca el dominio de producción (que sirve
+  sobre HTTPS real, sin necesitar ninguna excepción acá).
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+</network-security-config>
