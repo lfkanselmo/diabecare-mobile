@@ -16,18 +16,28 @@ import '../../../vitals/presentation/providers/vitals_providers.dart';
 /// Dashboard de Fase 1 + Fase 2 + Fase 3 — glucosa, alertas, resumen diario
 /// de nutrición, último signo vital y acceso rápido al ciclo menstrual
 /// (solo si `biologicalSex == FEMALE`, mismo gate que `dashboard.component.ts`).
-class DashboardScreen extends ConsumerWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  // Fijado una sola vez al entrar a la pantalla: recalcular DateTime.now() en
+  // cada build() rompía tanto el caché del provider family como el TTL de
+  // GlucoseStatsCache (la key incluye from/to con microsegundos), disparando
+  // una llamada de red nueva en cada rebuild del dashboard.
+  late final DateTime _to = DateTime.now();
+  late final DateTime _from = _to.subtract(const Duration(days: 7));
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final session = ref.watch(authProvider).value;
     final alertsAsync = ref.watch(alertsProvider);
 
-    final to = DateTime.now();
-    final from = to.subtract(const Duration(days: 7));
-    final statsAsync = ref.watch(glucoseStatsProvider(from: from, to: to));
+    final statsAsync = ref.watch(glucoseStatsProvider(from: _from, to: _to));
 
     return BiometricLockGate(
       child: Scaffold(
