@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// `SegmentedButton` Material 3 en Android, `CupertinoSlidingSegmentedControl`
 /// en iOS — DESIGN_GUIDELINES.md sección 5, fila "Selector de unidad".
@@ -30,7 +32,9 @@ class AdaptiveSegmentedControl<T extends Object> extends StatelessWidget {
             ),
         },
         onValueChanged: (value) {
-          if (value != null) onChanged(value);
+          if (value == null) return;
+          unawaited(HapticFeedback.lightImpact());
+          onChanged(value);
         },
       );
     }
@@ -44,7 +48,10 @@ class AdaptiveSegmentedControl<T extends Object> extends StatelessWidget {
           ),
       ],
       selected: {selected},
-      onSelectionChanged: (values) => onChanged(values.first),
+      onSelectionChanged: (values) {
+        unawaited(HapticFeedback.lightImpact());
+        onChanged(values.first);
+      },
     );
   }
 }

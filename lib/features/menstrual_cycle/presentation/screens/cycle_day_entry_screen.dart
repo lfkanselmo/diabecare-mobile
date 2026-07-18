@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,6 +38,7 @@ class _CycleDayEntryScreenState extends ConsumerState<CycleDayEntryScreen> {
   }
 
   void _cycleSeverity(CycleSymptom symptom) {
+    unawaited(HapticFeedback.lightImpact());
     setState(() {
       final current = _symptoms[symptom];
       if (current == null) {

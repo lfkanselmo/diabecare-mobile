@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Confirmación de una acción, destructiva o no — `CupertinoActionSheet` con
 /// `isDestructiveAction` en iOS, `AlertDialog` Material en Android (ver
@@ -54,5 +56,10 @@ Future<bool> showAdaptiveConfirmDialog({
           ),
         );
 
-  return confirmed ?? false;
+  final result = confirmed ?? false;
+  // Feedback háptico solo al confirmar una acción destructiva — ver
+  // DESIGN_GUIDELINES.md sección 4 (heavyImpact reservado para
+  // confirmaciones destructivas y alertas críticas de glucosa).
+  if (result && isDestructive) unawaited(HapticFeedback.heavyImpact());
+  return result;
 }

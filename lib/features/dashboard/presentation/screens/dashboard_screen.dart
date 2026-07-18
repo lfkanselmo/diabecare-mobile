@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/security/biometric_lock_gate.dart';
 import '../../../../shared/widgets/async_value_view.dart';
+import '../../../../shared/widgets/fade_slide_in.dart';
+import '../../../../shared/widgets/shimmer_placeholder.dart';
 import '../../../alerts/presentation/providers/alerts_provider.dart';
 import '../../../alerts/presentation/widgets/alerts_panel.dart';
 import '../../../auth/domain/entities/biological_sex.dart';
@@ -61,23 +63,39 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 if (session?.patient != null)
                   Text(session!.patient!.fullName, style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 16),
-                alertsAsync.when(
-                  loading: () => const SizedBox.shrink(),
-                  error: (error, stack) => const SizedBox.shrink(),
-                  data: (alerts) => AlertsPanel(alerts: alerts),
-                ),
-                statsAsync.when(
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => TextButton(
-                    onPressed: () => context.push('/glucose/register'),
-                    child: Text(l10n.dashboardNoReadingsYet),
+                FadeSlideIn(
+                  child: alertsAsync.when(
+                    loading: () => const SizedBox.shrink(),
+                    error: (error, stack) => const SizedBox.shrink(),
+                    data: (alerts) => AlertsPanel(alerts: alerts),
                   ),
-                  data: (stats) => stats.totalReadings == 0
-                      ? TextButton(
-                          onPressed: () => context.push('/glucose/register'),
-                          child: Text(l10n.dashboardNoReadingsYet),
-                        )
-                      : GlucoseStatsCard(stats: stats),
+                ),
+                FadeSlideIn(
+                  delay: const Duration(milliseconds: 60),
+                  child: statsAsync.when(
+                    loading: () => const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Column(
+                        children: [
+                          ShimmerPlaceholder(height: 20, width: 160),
+                          SizedBox(height: 12),
+                          ShimmerPlaceholder(height: 40, width: 120),
+                          SizedBox(height: 12),
+                          ShimmerPlaceholder(height: 14),
+                        ],
+                      ),
+                    ),
+                    error: (error, stack) => TextButton(
+                      onPressed: () => context.push('/glucose/register'),
+                      child: Text(l10n.dashboardNoReadingsYet),
+                    ),
+                    data: (stats) => stats.totalReadings == 0
+                        ? TextButton(
+                            onPressed: () => context.push('/glucose/register'),
+                            child: Text(l10n.dashboardNoReadingsYet),
+                          )
+                        : GlucoseStatsCard(stats: stats),
+                  ),
                 ),
                 const SizedBox(height: 8),
                 TextButton(
@@ -85,9 +103,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   child: Text(l10n.dashboardViewHistory),
                 ),
                 const SizedBox(height: 16),
-                const DailySummaryCard(),
+                const FadeSlideIn(delay: Duration(milliseconds: 120), child: DailySummaryCard()),
                 const SizedBox(height: 16),
-                const _LatestVitalCard(),
+                const FadeSlideIn(delay: Duration(milliseconds: 180), child: _LatestVitalCard()),
                 const SizedBox(height: 24),
                 FilledButton.icon(
                   onPressed: () => context.push('/glucose/register'),

@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../shared/l10n/enum_labels.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
+import '../../../../shared/widgets/empty_state_view.dart';
+import '../../../../shared/widgets/shimmer_placeholder.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../domain/entities/glucose_reading.dart';
 import '../providers/glucose_providers.dart';
@@ -114,15 +116,15 @@ class _GlucoseHistoryScreenState extends ConsumerState<GlucoseHistoryScreen> {
             const SizedBox(height: 8),
             Expanded(
               child: readingsAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Center(child: Text('$error')),
+                loading: () => const ShimmerListPlaceholder(),
+                error: (error, stack) => Center(child: Text(l10n.commonSomethingWentWrong)),
                 data: (readings) {
                   if (readings.isEmpty) {
-                    return Center(
-                      child: TextButton(
-                        onPressed: () => context.push('/glucose/register'),
-                        child: Text(l10n.glucoseHistoryRegisterFirst),
-                      ),
+                    return EmptyStateView(
+                      icon: Icons.water_drop_outlined,
+                      message: l10n.glucoseHistoryRegisterFirst,
+                      actionLabel: l10n.dashboardRegisterGlucose,
+                      onAction: () => context.push('/glucose/register'),
                     );
                   }
 

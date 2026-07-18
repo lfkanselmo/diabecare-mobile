@@ -40,25 +40,47 @@ class AsyncValueView<T> extends StatelessWidget {
   final WidgetBuilder? loadingBuilder;
 
   Widget _loading(BuildContext context) =>
-      loadingBuilder?.call(context) ?? const Center(child: CircularProgressIndicator());
+      KeyedSubtree(key: const ValueKey('loading'), child: loadingBuilder?.call(context) ?? const Center(child: CircularProgressIndicator()));
+
+  Widget _error(BuildContext context) =>
+      KeyedSubtree(key: const ValueKey('error'), child: _AsyncErrorView(message: errorMessage, onRetry: onRetry));
+
+  Widget _data(BuildContext context, T data) => KeyedSubtree(key: const ValueKey('data'), child: builder(context, data));
 
   @override
   Widget build(BuildContext context) {
+    // Respeta la preferencia de "reducir movimiento" del sistema — sin
+    // crossfade cuando el usuario la activó, no solo más corto.
+    final duration = MediaQuery.of(context).disableAnimations ? Duration.zero : const Duration(milliseconds: 200);
+
     final asyncValue = value;
     if (asyncValue != null) {
-      return asyncValue.when(
-        data: (data) => builder(context, data),
-        loading: () => _loading(context),
-        error: (_, _) => _AsyncErrorView(message: errorMessage, onRetry: onRetry),
+      return AnimatedSwitcher(
+        duration: duration,
+        child: asyncValue.when(
+          data: (data) => _data(context, data),
+          loading: () => _loading(context),
+          error: (_, _) => _error(context),
+        ),
       );
     }
 
+    // El AnimatedSwitcher va DENTRO del builder del FutureBuilder — tiene
+    // que envolver directo al hijo que cambia de key en cada snapshot, no al
+    // FutureBuilder en sí (que es siempre la misma instancia, sin key propia,
+    // así que envolverlo por fuera nunca dispara el crossfade).
     return FutureBuilder<T>(
       future: future,
       builder: (context, snapshot) {
-        if (snapshot.hasError) return _AsyncErrorView(message: errorMessage, onRetry: onRetry);
-        if (!snapshot.hasData) return _loading(context);
-        return builder(context, snapshot.data as T);
+        final Widget child;
+        if (snapshot.hasError) {
+          child = _error(context);
+        } else if (!snapshot.hasData) {
+          child = _loading(context);
+        } else {
+          child = _data(context, snapshot.data as T);
+        }
+        return AnimatedSwitcher(duration: duration, child: child);
       },
     );
   }

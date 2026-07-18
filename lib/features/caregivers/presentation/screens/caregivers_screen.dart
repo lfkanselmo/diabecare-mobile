@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../shared/widgets/async_value_view.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
+import '../../../../shared/widgets/empty_state_view.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
 import '../../domain/entities/caregiver_link.dart';
 import '../providers/caregiver_providers.dart';
@@ -148,7 +149,14 @@ class _CaregiversScreenState extends ConsumerState<CaregiversScreen> with Single
                       errorMessage: l10n.caregiversErrorMessage,
                       onRetry: _refreshLinks,
                       builder: (context, links) {
-                        if (links.isEmpty) return Center(child: Text(l10n.caregiversNoLinks));
+                        if (links.isEmpty) {
+                          return EmptyStateView(
+                            icon: Icons.people_outline,
+                            message: l10n.caregiversNoLinks,
+                            actionLabel: l10n.caregiversCreateInvite,
+                            onAction: _createInvite,
+                          );
+                        }
                         return ListView.builder(
                           itemCount: links.length,
                           itemBuilder: (context, index) {
@@ -188,7 +196,14 @@ class _CaregiversScreenState extends ConsumerState<CaregiversScreen> with Single
                       errorMessage: l10n.caregiversErrorMessage,
                       onRetry: _refreshPatients,
                       builder: (context, patients) {
-                        if (patients.isEmpty) return Center(child: Text(l10n.caregiversNoPatients));
+                        if (patients.isEmpty) {
+                          return EmptyStateView(
+                            icon: Icons.medical_information_outlined,
+                            message: l10n.caregiversNoPatients,
+                            actionLabel: l10n.caregiversRedeemTitle,
+                            onAction: _redeemCode,
+                          );
+                        }
                         return ListView.builder(
                           itemCount: patients.length,
                           itemBuilder: (context, index) {
