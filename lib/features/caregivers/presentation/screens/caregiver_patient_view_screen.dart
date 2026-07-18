@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/network/network_providers.dart';
 import '../../../../shared/l10n/enum_labels.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../../alerts/domain/entities/alert.dart';
 import '../../../alerts/presentation/widgets/alerts_panel.dart';
 import '../../../auth/domain/entities/patient.dart';
@@ -74,12 +75,10 @@ class CaregiverPatientViewScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.caregiverPatientViewTitle)),
       body: SafeArea(
-        child: FutureBuilder<_CaregiverPatientSnapshot>(
+        child: AsyncValueView<_CaregiverPatientSnapshot>.future(
           future: _load(ref),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-            final data = snapshot.data!;
-
+          errorMessage: l10n.caregiversErrorMessage,
+          builder: (context, data) {
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [

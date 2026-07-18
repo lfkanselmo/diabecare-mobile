@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../domain/entities/cycle_phase.dart';
 import '../../domain/entities/cycle_phase_day.dart';
 import '../providers/menstrual_cycle_providers.dart';
@@ -31,11 +32,11 @@ class PhaseCalendarStrip extends ConsumerWidget {
     final from = DateTime(today.year, today.month, today.day).subtract(const Duration(days: 7));
     final to = DateTime(today.year, today.month, today.day).add(const Duration(days: 7));
 
-    return FutureBuilder<List<CyclePhaseDay>>(
+    return AsyncValueView<List<CyclePhaseDay>>.future(
       future: ref.read(menstrualCycleRepositoryProvider).getPhaseCalendar(from: from, to: to),
-      builder: (context, snapshot) {
-        final days = snapshot.data;
-        if (days == null || days.isEmpty) return const SizedBox.shrink();
+      errorMessage: l10n.commonSomethingWentWrong,
+      builder: (context, days) {
+        if (days.isEmpty) return const SizedBox.shrink();
 
         final dayFormat = DateFormat.Md(l10n.localeName);
         return SizedBox(

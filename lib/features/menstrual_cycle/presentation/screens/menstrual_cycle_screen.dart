@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
 import '../../../../shared/widgets/pickers/adaptive_date_picker.dart';
 import '../../domain/entities/menstrual_cycle_status.dart';
@@ -80,12 +81,11 @@ class _MenstrualCycleScreenState extends ConsumerState<MenstrualCycleScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.cycleTitle)),
       body: SafeArea(
-        child: FutureBuilder<MenstrualCycleStatus>(
+        child: AsyncValueView<MenstrualCycleStatus>.future(
           future: _statusFuture,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-            final status = snapshot.data!;
-
+          errorMessage: l10n.cycleErrorMessage,
+          onRetry: _refresh,
+          builder: (context, status) {
             return RefreshIndicator(
               onRefresh: () async => _refresh(),
               child: ListView(

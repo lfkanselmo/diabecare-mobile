@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/network/network_providers.dart';
 import '../../../../shared/l10n/enum_labels.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
 import '../../domain/entities/admin_user.dart';
 import '../../domain/entities/user_role.dart';
@@ -95,12 +96,11 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
         ],
       ),
       body: SafeArea(
-        child: FutureBuilder<AdminUserPage>(
+        child: AsyncValueView<AdminUserPage>.future(
           future: _pageFuture,
-          builder: (context, snapshot) {
-            final page = snapshot.data;
-            if (page == null) return const Center(child: CircularProgressIndicator());
-
+          errorMessage: l10n.adminErrorMessage,
+          onRetry: _load,
+          builder: (context, page) {
             return Column(
               children: [
                 Expanded(

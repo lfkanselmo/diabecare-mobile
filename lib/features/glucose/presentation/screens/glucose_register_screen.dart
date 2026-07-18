@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../shared/l10n/enum_labels.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
 import '../../../../shared/widgets/inputs/app_text_field.dart';
 import '../../../../shared/widgets/pickers/adaptive_date_picker.dart';
@@ -137,10 +138,11 @@ class _GlucoseRegisterScreenState extends ConsumerState<GlucoseRegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FutureBuilder<bool>(
+                AsyncValueView<bool>.future(
                   future: ref.read(bleGlucoseMeterServiceProvider).isSupported(),
-                  builder: (context, snapshot) {
-                    if (snapshot.data != true) {
+                  errorMessage: l10n.glucoseRegisterMeterUnsupported,
+                  builder: (context, supported) {
+                    if (!supported) {
                       return Text(l10n.glucoseRegisterMeterUnsupported);
                     }
                     return OutlinedButton.icon(

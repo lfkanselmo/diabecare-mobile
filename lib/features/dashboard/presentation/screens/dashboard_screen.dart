@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/security/biometric_lock_gate.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../../alerts/presentation/providers/alerts_provider.dart';
 import '../../../alerts/presentation/widgets/alerts_panel.dart';
 import '../../../auth/domain/entities/biological_sex.dart';
@@ -134,10 +135,10 @@ class _LatestVitalCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    return FutureBuilder(
+    return AsyncValueView.future(
       future: ref.read(vitalSignRepositoryProvider).getLatest(),
-      builder: (context, snapshot) {
-        final vital = snapshot.data;
+      errorMessage: l10n.commonSomethingWentWrong,
+      builder: (context, vital) {
         if (vital == null) return const SizedBox.shrink();
         return Card(
           child: Padding(

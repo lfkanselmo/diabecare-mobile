@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
 import '../../domain/entities/caregiver_link.dart';
@@ -142,11 +143,11 @@ class _CaregiversScreenState extends ConsumerState<CaregiversScreen> with Single
                   AppPrimaryButton(label: l10n.caregiversCreateInvite, onPressed: _createInvite),
                   const SizedBox(height: 16),
                   Expanded(
-                    child: FutureBuilder<List<CaregiverLink>>(
+                    child: AsyncValueView<List<CaregiverLink>>.future(
                       future: _linksFuture,
-                      builder: (context, snapshot) {
-                        final links = snapshot.data;
-                        if (links == null) return const Center(child: CircularProgressIndicator());
+                      errorMessage: l10n.caregiversErrorMessage,
+                      onRetry: _refreshLinks,
+                      builder: (context, links) {
                         if (links.isEmpty) return Center(child: Text(l10n.caregiversNoLinks));
                         return ListView.builder(
                           itemCount: links.length,
@@ -182,11 +183,11 @@ class _CaregiversScreenState extends ConsumerState<CaregiversScreen> with Single
                   OutlinedButton(onPressed: _redeemCode, child: Text(l10n.caregiversRedeemTitle)),
                   const SizedBox(height: 16),
                   Expanded(
-                    child: FutureBuilder<List<PatientAccess>>(
+                    child: AsyncValueView<List<PatientAccess>>.future(
                       future: _patientsFuture,
-                      builder: (context, snapshot) {
-                        final patients = snapshot.data;
-                        if (patients == null) return const Center(child: CircularProgressIndicator());
+                      errorMessage: l10n.caregiversErrorMessage,
+                      onRetry: _refreshPatients,
+                      builder: (context, patients) {
                         if (patients.isEmpty) return Center(child: Text(l10n.caregiversNoPatients));
                         return ListView.builder(
                           itemCount: patients.length,

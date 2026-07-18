@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../shared/l10n/enum_labels.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../domain/entities/exercise_log.dart';
 import '../../domain/entities/hba1c_trend_point.dart';
 import '../../domain/entities/vital_sign.dart';
@@ -175,12 +176,10 @@ class _Hba1cTrendTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    return FutureBuilder<List<Hba1cTrendPoint>>(
+    return AsyncValueView<List<Hba1cTrendPoint>>.future(
       future: ref.read(vitalSignRepositoryProvider).getHba1cTrend(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) return Center(child: Text(l10n.vitalsHba1cTrendErrorMessage));
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-        final points = snapshot.data!;
+      errorMessage: l10n.vitalsHba1cTrendErrorMessage,
+      builder: (context, points) {
         if (points.isEmpty) return Center(child: Text(l10n.vitalsHba1cTrendEmpty));
         return Padding(padding: const EdgeInsets.all(16), child: Hba1cTrendChart(points: points));
       },

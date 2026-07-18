@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
 import '../../domain/entities/active_session.dart';
@@ -182,11 +183,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen> with SingleTicker
                 const SizedBox(height: 24),
                 Text(l10n.accountSessionsTitle, style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 8),
-                FutureBuilder<List<ActiveSession>>(
+                AsyncValueView<List<ActiveSession>>.future(
                   future: _sessionsFuture,
-                  builder: (context, snapshot) {
-                    final sessions = snapshot.data;
-                    if (sessions == null) return const Center(child: CircularProgressIndicator());
+                  errorMessage: l10n.accountErrorMessage,
+                  onRetry: _refreshSessions,
+                  builder: (context, sessions) {
                     return Column(
                       children: [
                         for (final session in sessions)
@@ -217,11 +218,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen> with SingleTicker
                   AppPrimaryButton(label: l10n.accountGenerateKeyTitle, onPressed: _generateKey),
                   const SizedBox(height: 16),
                   Expanded(
-                    child: FutureBuilder<List<DeviceApiKey>>(
+                    child: AsyncValueView<List<DeviceApiKey>>.future(
                       future: _keysFuture,
-                      builder: (context, snapshot) {
-                        final keys = snapshot.data;
-                        if (keys == null) return const Center(child: CircularProgressIndicator());
+                      errorMessage: l10n.accountErrorMessage,
+                      onRetry: _refreshKeys,
+                      builder: (context, keys) {
                         if (keys.isEmpty) return Center(child: Text(l10n.accountNoKeys));
                         return ListView.builder(
                           itemCount: keys.length,

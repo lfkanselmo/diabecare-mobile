@@ -127,9 +127,9 @@ server_updated_at DATETIME NULL   -- null hasta la primera sincronización exito
 
 1. El usuario registra una lectura de glucosa sin conexión.
 2. Se inserta localmente con un UUID generado en el cliente, `sync_status = 'pending_create'`. La UI la muestra de inmediato (con un indicador visual sutil de "pendiente de sincronizar").
-3. El `SyncService` (corre en background vía `workmanager` en Android / `BGTaskScheduler` en iOS, y también se dispara al detectar reconexión con `connectivity_plus`) recorre el outbox en orden y hace `POST`/`PATCH`/`DELETE` contra la API.
+3. El `SyncService` recorre el outbox en orden y hace `POST`/`PATCH`/`DELETE` contra la API. **Estado real (corregido 2026-07, Fase 7)**: no hay ejecución en background a nivel de SO — ni `workmanager` (Android) ni `BGTaskScheduler` (iOS) están en `pubspec.yaml`. El disparo ocurre solo por eventos de ciclo de vida de la app: arranque (si ya hay conexión), vuelta a primer plano, cambio de conectividad (`connectivity_plus`), y justo después de login/registro (ver Fase 5 del ROADMAP). Si el usuario no vuelve a abrir la app, lo pendiente no se sube solo — implementar sync real a nivel de SO queda pendiente como feature aparte (permisos, exención de optimización de batería, entitlements de iOS).
 4. Al confirmar éxito, `sync_status = 'synced'` y se guarda `server_updated_at`.
-5. Si falla por error de red, reintenta con backoff exponencial. Si falla por un error de validación real (4xx que no sea de red), se marca como `sync_error` y se expone en una pantalla de "elementos con problemas de sincronización" — nunca se descarta silenciosamente un dato de salud.
+5. Si falla por error de red, reintenta con backoff exponencial. Si falla por un error de validación real (4xx que no sea de red), se marca como `sync_error` en la base local. **Estado real**: ese estado se persiste y se testea (Fase 5), pero todavía no hay ninguna pantalla que lo muestre al usuario — la frase "se expone en una pantalla de elementos con problemas de sincronización" describía una intención, no algo construido. Sigue siendo cierto que nunca se descarta silenciosamente un dato de salud (el registro queda marcado `sync_error` en vez de perderse), pero el usuario hoy no tiene forma de enterarse desde la UI.
 
 ### 4.4 Flujo de lectura / pull
 

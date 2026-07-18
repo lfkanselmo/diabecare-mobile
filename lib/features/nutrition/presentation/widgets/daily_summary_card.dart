@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/widgets/async_value_view.dart';
 import '../../domain/entities/daily_summary.dart';
 import '../providers/nutrition_providers.dart';
 
@@ -14,13 +15,12 @@ class DailySummaryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    return FutureBuilder<DailySummary>(
+    return AsyncValueView<DailySummary>.future(
       future: ref.read(mealRepositoryProvider).getDailySummary(DateTime.now()),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Card(child: Padding(padding: EdgeInsets.all(16), child: LinearProgressIndicator()));
-        }
-        final summary = snapshot.data!;
+      errorMessage: l10n.commonSomethingWentWrong,
+      loadingBuilder: (context) =>
+          const Card(child: Padding(padding: EdgeInsets.all(16), child: LinearProgressIndicator())),
+      builder: (context, summary) {
         return Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
