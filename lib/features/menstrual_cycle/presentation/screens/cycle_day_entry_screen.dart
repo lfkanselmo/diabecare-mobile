@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
 import '../../../../shared/widgets/inputs/app_text_field.dart';
 import '../../domain/entities/cycle_symptom.dart';
@@ -102,7 +103,7 @@ class _CycleDayEntryScreenState extends ConsumerState<CycleDayEntryScreen> {
                 initialValue: _flowIntensity,
                 decoration: InputDecoration(labelText: l10n.cycleDayEntryFlowIntensity),
                 items: FlowIntensity.values
-                    .map((f) => DropdownMenuItem(value: f, child: Text(f.wireValue)))
+                    .map((f) => DropdownMenuItem(value: f, child: Text(f.label(l10n))))
                     .toList(),
                 onChanged: (value) => setState(() => _flowIntensity = value!),
               ),
@@ -116,7 +117,7 @@ class _CycleDayEntryScreenState extends ConsumerState<CycleDayEntryScreen> {
                 children: [
                   for (final symptom in CycleSymptom.values)
                     FilterChip(
-                      label: Text(symptom.wireValue),
+                      label: Text(symptom.label(l10n)),
                       selected: _symptoms.containsKey(symptom),
                       backgroundColor: _chipColor(context, _symptoms[symptom]),
                       selectedColor: _chipColor(context, _symptoms[symptom]),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/network/network_providers.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../alerts/domain/entities/alert.dart';
 import '../../../alerts/presentation/widgets/alerts_panel.dart';
 import '../../../auth/domain/entities/patient.dart';
@@ -83,7 +84,7 @@ class CaregiverPatientViewScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               children: [
                 Text(data.patient.fullName, style: Theme.of(context).textTheme.titleLarge),
-                Text(data.patient.diabetesType.wireValue),
+                Text(data.patient.diabetesType.label(l10n)),
                 const SizedBox(height: 16),
                 AlertsPanel(alerts: data.alerts),
                 const SizedBox(height: 16),

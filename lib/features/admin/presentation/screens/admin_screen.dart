@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/network/network_providers.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
 import '../../domain/entities/admin_user.dart';
 import '../../domain/entities/user_role.dart';
@@ -47,7 +48,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
     final confirmed = await showAdaptiveConfirmDialog(
       context: context,
       title: l10n.adminChangeRoleTitle,
-      message: l10n.adminChangeRoleMessage(user.email, newRole.wireValue),
+      message: l10n.adminChangeRoleMessage(user.email, newRole.label(l10n)),
       confirmLabel: l10n.adminChangeRoleConfirm,
       cancelLabel: l10n.adminCancel,
     );
@@ -111,7 +112,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                       return ListTile(
                         title: Text(user.email),
                         subtitle: Text(
-                          '${user.role.wireValue} · ${dateFormat.format(user.createdAt)}'
+                          '${user.role.label(l10n)} · ${dateFormat.format(user.createdAt)}'
                           '${user.suspendedAt != null ? ' · ${l10n.adminSuspended}' : ''}'
                           '${user.deletedAt != null ? ' · ${l10n.adminDeleted}' : ''}',
                         ),

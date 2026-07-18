@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
 import '../../../../shared/widgets/inputs/app_text_field.dart';
 import '../../../../shared/widgets/pickers/adaptive_date_picker.dart';
@@ -103,7 +104,7 @@ class _MedicationRegisterScreenState extends ConsumerState<MedicationRegisterScr
                   initialValue: _type,
                   decoration: InputDecoration(labelText: l10n.medicationsType),
                   items: MedicationType.values
-                      .map((t) => DropdownMenuItem(value: t, child: Text(t.wireValue)))
+                      .map((t) => DropdownMenuItem(value: t, child: Text(t.label(l10n))))
                       .toList(),
                   onChanged: (value) => setState(() => _type = value!),
                 ),
@@ -127,7 +128,9 @@ class _MedicationRegisterScreenState extends ConsumerState<MedicationRegisterScr
                       child: DropdownButtonFormField<DoseUnit>(
                         initialValue: _doseUnit,
                         decoration: InputDecoration(labelText: l10n.medicationsDoseUnit),
-                        items: DoseUnit.values.map((u) => DropdownMenuItem(value: u, child: Text(u.wireValue))).toList(),
+                        items: DoseUnit.values
+                            .map((u) => DropdownMenuItem(value: u, child: Text(u.label(l10n))))
+                            .toList(),
                         onChanged: (value) => setState(() => _doseUnit = value!),
                       ),
                     ),
@@ -138,7 +141,7 @@ class _MedicationRegisterScreenState extends ConsumerState<MedicationRegisterScr
                   initialValue: _frequency,
                   decoration: InputDecoration(labelText: l10n.medicationsFrequency),
                   items: MedicationFrequency.values
-                      .map((f) => DropdownMenuItem(value: f, child: Text(f.wireValue)))
+                      .map((f) => DropdownMenuItem(value: f, child: Text(f.label(l10n))))
                       .toList(),
                   onChanged: (value) => setState(() => _frequency = value!),
                 ),

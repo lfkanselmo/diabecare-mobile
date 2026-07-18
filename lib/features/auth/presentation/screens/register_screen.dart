@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../../shared/widgets/buttons/app_primary_button.dart';
 import '../../../../shared/widgets/inputs/app_text_field.dart';
 import '../../../../shared/widgets/pickers/adaptive_date_picker.dart';
@@ -170,14 +171,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             onPicked: (date) => setState(() => _dateOfBirth = date),
           ),
           const SizedBox(height: 16),
-          // TODO(fase-1): reemplazar por las etiquetas traducidas del catálogo
-          // `/metadata/diabetes-types` (ver MetadataService de la web) una vez
-          // que exista el bootstrap de metadata post-login en el móvil.
           DropdownButtonFormField<DiabetesType>(
             initialValue: _diabetesType,
             decoration: InputDecoration(labelText: l10n.authRegisterDiabetesType),
             items: DiabetesType.values
-                .map((type) => DropdownMenuItem(value: type, child: Text(type.wireValue)))
+                .map((type) => DropdownMenuItem(value: type, child: Text(type.label(l10n))))
                 .toList(),
             onChanged: (value) => setState(() => _diabetesType = value),
             validator: (value) => value == null ? l10n.authRegisterDiabetesTypeRequired : null,

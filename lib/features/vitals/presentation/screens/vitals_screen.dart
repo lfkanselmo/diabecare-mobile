@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../domain/entities/exercise_log.dart';
 import '../../domain/entities/hba1c_trend_point.dart';
 import '../../domain/entities/vital_sign.dart';
@@ -158,7 +159,7 @@ class _ExerciseTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
-        title: Text('${log.exerciseType.wireValue} · ${log.durationMinutes} min'),
+        title: Text('${log.exerciseType.label(l10n)} · ${log.durationMinutes} min'),
         subtitle: Text(dateFormat.format(log.performedAt)),
         trailing: log.caloriesBurned == null
             ? Icon(Icons.sync, color: Theme.of(context).colorScheme.outline)

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../domain/entities/glucose_reading.dart';
@@ -131,13 +133,14 @@ class _GlucoseHistoryScreenState extends ConsumerState<GlucoseHistoryScreen> {
                     );
                   }
 
+                  final dateFormat = DateFormat.yMd(l10n.localeName).add_Hm();
                   return ListView.builder(
                     itemCount: readings.length,
                     itemBuilder: (context, index) {
                       final reading = readings[index];
                       return ListTile(
-                        title: Text('${reading.value} ${reading.unit.wireValue}'),
-                        subtitle: Text('${reading.readingType.wireValue} · ${reading.measuredAt}'),
+                        title: Text('${reading.value} ${reading.unit.label(l10n)}'),
+                        subtitle: Text('${reading.readingType.label(l10n)} · ${dateFormat.format(reading.measuredAt)}'),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete_outline),
                           tooltip: l10n.commonDelete,

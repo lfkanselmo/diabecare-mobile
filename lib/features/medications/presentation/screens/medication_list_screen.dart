@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../../shared/widgets/dialogs/confirm_dialog.dart';
 import '../../domain/entities/medication.dart';
 import '../providers/medication_providers.dart';
@@ -57,7 +58,9 @@ class MedicationListScreen extends ConsumerWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: ListTile(
                         title: Text(medication.name),
-                        subtitle: Text('${medication.dose} ${medication.doseUnit.wireValue} — ${medication.frequency.wireValue}'),
+                        subtitle: Text(
+                          '${medication.dose} ${medication.doseUnit.label(l10n)} — ${medication.frequency.label(l10n)}',
+                        ),
                         trailing: IconButton(
                           icon: const Icon(Icons.remove_circle_outline),
                           tooltip: l10n.medicationsDeactivateTitle,

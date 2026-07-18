@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/security/security_providers.dart';
+import '../../../../shared/l10n/enum_labels.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
 /// Hub de navegación — perfil del paciente, bloqueo biométrico (el toggle
@@ -56,7 +57,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             if (session?.patient != null)
               ListTile(
                 title: Text(session!.patient!.fullName),
-                subtitle: Text(session.patient!.diabetesType.wireValue),
+                subtitle: Text(session.patient!.diabetesType.label(l10n)),
               ),
             const Divider(),
             if (_biometricAvailable)
