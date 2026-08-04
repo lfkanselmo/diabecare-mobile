@@ -136,8 +136,6 @@ class MedicationRepositoryImpl implements MedicationRepository, SyncableReposito
     await _authRepository.updateCachedPatient(Patient.fromJson(json));
   }
 
-  // ── SyncableRepository<Medication> ──
-
   @override
   Future<List<PendingChange<Medication>>> getPending() async {
     final rows = await _dao.getPending();
@@ -182,8 +180,6 @@ class MedicationRepositoryImpl implements MedicationRepository, SyncableReposito
 
   @override
   Future<void> markSyncError(String id, String message) => _dao.markSyncError(id, message);
-
-  // ── Helpers ──
 
   Future<String> _requirePatientId() async {
     final session = await _authRepository.loadSession();

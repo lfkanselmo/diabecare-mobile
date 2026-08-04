@@ -115,8 +115,6 @@ class VitalSignRepositoryImpl implements VitalSignRepository, SyncableRepository
         .insertOnConflictUpdate(SyncCursorsCompanion.insert(resource: _resourceName, lastSyncedAt: DateTime.now()));
   }
 
-  // ── SyncableRepository<VitalSign> ──
-
   @override
   Future<List<PendingChange<VitalSign>>> getPending() async {
     final rows = await _dao.getPending();
@@ -159,8 +157,6 @@ class VitalSignRepositoryImpl implements VitalSignRepository, SyncableRepository
 
   @override
   Future<void> markSyncError(String id, String message) => _dao.markSyncError(id, message);
-
-  // ── Helpers ──
 
   Future<String> _requirePatientId() async {
     final session = await _authRepository.loadSession();

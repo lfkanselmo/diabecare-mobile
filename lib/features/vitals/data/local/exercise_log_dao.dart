@@ -3,7 +3,6 @@ import 'package:drift/drift.dart';
 import '../../../../core/storage/app_database.dart';
 import '../../../../core/sync/sync_status.dart';
 
-/// Acceso a la tabla `ExerciseLogs` — capa puramente de persistencia.
 class ExerciseLogDao {
   ExerciseLogDao(this._db);
 

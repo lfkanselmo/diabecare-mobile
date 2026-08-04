@@ -115,8 +115,6 @@ class MealRepositoryImpl implements MealRepository, SyncableRepository<MealEntry
         .insertOnConflictUpdate(SyncCursorsCompanion.insert(resource: _resourceName, lastSyncedAt: DateTime.now()));
   }
 
-  // ── SyncableRepository<MealEntry> ──
-
   @override
   Future<List<PendingChange<MealEntry>>> getPending() async {
     final rows = await _dao.getPending();
@@ -168,8 +166,6 @@ class MealRepositoryImpl implements MealRepository, SyncableRepository<MealEntry
 
   @override
   Future<void> markSyncError(String id, String message) => _dao.markSyncError(id, message);
-
-  // ── Helpers ──
 
   Future<String> _requirePatientId() async {
     final session = await _authRepository.loadSession();

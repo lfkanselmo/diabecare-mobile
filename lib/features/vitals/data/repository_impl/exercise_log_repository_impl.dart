@@ -89,8 +89,6 @@ class ExerciseLogRepositoryImpl implements ExerciseLogRepository, SyncableReposi
         .insertOnConflictUpdate(SyncCursorsCompanion.insert(resource: _resourceName, lastSyncedAt: DateTime.now()));
   }
 
-  // ── SyncableRepository<ExerciseLog> ──
-
   @override
   Future<List<PendingChange<ExerciseLog>>> getPending() async {
     final rows = await _dao.getPending();
@@ -131,8 +129,6 @@ class ExerciseLogRepositoryImpl implements ExerciseLogRepository, SyncableReposi
 
   @override
   Future<void> markSyncError(String id, String message) => _dao.markSyncError(id, message);
-
-  // ── Helpers ──
 
   Future<String> _requirePatientId() async {
     final session = await _authRepository.loadSession();

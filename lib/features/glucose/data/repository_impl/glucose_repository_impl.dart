@@ -160,8 +160,6 @@ class GlucoseRepositoryImpl implements GlucoseRepository, SyncableRepository<Glu
         .insertOnConflictUpdate(SyncCursorsCompanion.insert(resource: _resourceName, lastSyncedAt: DateTime.now()));
   }
 
-  // ── SyncableRepository<GlucoseReading> ──
-
   @override
   Future<List<PendingChange<GlucoseReading>>> getPending() async {
     final rows = await _dao.getPending();
@@ -213,8 +211,6 @@ class GlucoseRepositoryImpl implements GlucoseRepository, SyncableRepository<Glu
 
   @override
   Future<void> markSyncError(String id, String message) => _dao.markSyncError(id, message);
-
-  // ── Helpers ──
 
   Future<String> _requirePatientId() async {
     final session = await _authRepository.loadSession();
