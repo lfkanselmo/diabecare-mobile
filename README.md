@@ -1,6 +1,13 @@
 # DiabeCare Mobile
 
+[![CI](https://github.com/lfkanselmo/diabecare-mobile/actions/workflows/ci.yml/badge.svg)](https://github.com/lfkanselmo/diabecare-mobile/actions/workflows/ci.yml)
+![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)
+
 Apps nativas para Android e iOS de DiabeCare — control de salud para pacientes diabéticos. Construidas con Flutter, con paridad completa de funcionalidades respecto a [`diabecare-web`](../diabecare-web) y soporte offline-first, consumiendo la misma API de [`diabecare-api`](../diabecare-api).
+
+## Capturas
+
+_(pendiente — agregar screenshots de la app en Android/iOS)_
 
 ---
 
